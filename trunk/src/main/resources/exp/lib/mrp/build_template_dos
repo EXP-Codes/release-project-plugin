@@ -1,0 +1,9 @@
+@echo off
+set ANT_HOME=D:\apache-ant-1.8.2
+set PATH=%ANT_HOME%\bin;%PATH%;
+
+for %%i in (conf,lib,doc,script,log,patch) do (md "%%i")
+call ant -f build.xml
+
+echo Finish.
+pause

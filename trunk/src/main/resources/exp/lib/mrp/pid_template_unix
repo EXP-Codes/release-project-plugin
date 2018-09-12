@@ -1,0 +1,15 @@
+#!/bin/bash
+# @{project_name}@
+
+export app_path=$(cat ./_app_path|grep -v ^#)
+if [ $app_path ];then
+    cd $app_path
+fi
+
+export threadname=$(cat ./_threadname)
+PID=`ps -ef|grep Dtn=${threadname}|grep -v grep|awk '{print $2}'`
+if [ -z $PID ];then
+    echo "The program $threadname has been stoped."
+else
+    echo $PID
+fi

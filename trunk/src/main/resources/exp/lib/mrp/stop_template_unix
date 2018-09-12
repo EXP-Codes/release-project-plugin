@@ -1,0 +1,23 @@
+#!/bin/bash
+# @{project_name}@
+
+export app_path=$(cat ./_app_path|grep -v ^#)
+if [ $app_path ];then
+    cd $app_path
+fi
+
+export threadname=$(cat ./_threadname)
+PID=`ps -ef|grep Dtn=${threadname}|grep -v grep|awk '{print $2}'`
+if [ $PID ];then
+    kill $PID
+    echo "The program $threadname is being killed, please wait for 10 seconds..."
+    sleep 10
+
+    PID=`ps -ef|grep Dtn=${threadname}|grep -v grep|awk '{print $2}'`
+    if [ $PID ];then
+        kill -9 $PID
+    fi
+    echo "Kill the program $threadname successfully."
+else
+    echo "The program $threadname has been stoped."
+fi

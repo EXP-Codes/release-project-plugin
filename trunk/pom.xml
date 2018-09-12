@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <!-- 如果parent标签有错忽略即可: Multiple annotations found at this line: - Plugin execution not covered by lifecy  -->
+    <!-- m2Eclipse插件与pom不兼容而已 -->
+    <parent>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugins</artifactId>
+        <version>16</version>
+    </parent>
+
+    <!--项目基本信息(必填)-->
+    <groupId>exp.libs</groupId>
+    <artifactId>mojo-release-plugin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>maven-plugin</packaging>
+
+    <name>mojo-release-plugin</name>
+    <description>Maven项目发布插件</description>
+    <url>https://github.com/lyy289065406/expcodes/trunk/java/03-plugin/mojo-release-plugin/trunk</url>
+    <inceptionYear>2016-01-01</inceptionYear>
+
+    <!--项目的问题管理系统(可选)-->
+    <issueManagement>
+        <system>Jenkins</system>
+        <url>http://127.0.0.1:8080/job/exp-libs/</url>
+    </issueManagement>
+    
+    <!--项目的问题追踪系统(可选)-->
+    <ciManagement>
+        <system>jenkins</system>
+        <url>http://127.0.0.1:8080/job/exp-libs/</url>
+    </ciManagement>
+    
+    <!-- 软件配置管理 -->
+    <scm>
+        <!-- 项目SVN主干目录（需保证目录已存在） -->
+        <connection>scm:svn:https://github.com/lyy289065406/expcodes/trunk/java/03-plugin/mojo-release-plugin/trunk</connection>
+        <developerConnection>scm:svn:https://github.com/lyy289065406/expcodes/trunk/java/03-plugin/mojo-release-plugin/trunk</developerConnection>
+        <url>scm:svn:https://github.com/lyy289065406/expcodes/trunk/java/03-plugin/mojo-release-plugin/trunk</url>
+    </scm>
+
+    <!-- 变量定义 -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jdk.version>1.6</jdk.version>
+        <explibs.version>1.0-SNAPSHOT</explibs.version>
+        <mvn.version>2.0.6</mvn.version>
+    </properties>
+
+    <!-- 项目依赖 -->
+    <dependencies>
+    
+        <!-- 经验库 -->
+        <dependency>
+          <groupId>exp.libs</groupId>
+          <artifactId>exp-libs-base</artifactId>
+          <version>${explibs.version}</version>
+        </dependency>
+        
+        <!-- Maven构件 -->
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-project</artifactId>
+            <version>${mvn.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-settings</artifactId>
+            <version>${mvn.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-artifact</artifactId>
+            <version>${mvn.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-model</artifactId>
+            <version>${mvn.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>${mvn.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-core</artifactId>
+            <version>${mvn.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+            <version>1.5.8</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+
+        <!-- logback -->
+        <dependency>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-core</artifactId>
+          <version>1.0.13</version>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+          <version>1.0.13</version>
+          <scope>runtime</scope>
+        </dependency>
+        <dependency>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-access</artifactId>
+          <version>1.0.13</version>
+          <scope>runtime</scope>
+        </dependency>
+        
+        <!-- 单元测试 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <!-- 项目构建 -->
+    <build>
+        <plugins>
+            
+            <!-- 指定项目JDK版本 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                </configuration>
+            </plugin>
+            
+            <!-- 跳过maven构件加密，否则自动版本提交可能会失败 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <!-- 版本打包插件，在dos跳转到项目根目录，依次执行（需保证没有引用快照、本地与SVN服务器内容完全一致）: 
+                1 发布基线到svn: mvn release:prepare 
+                2 发布引用到私服 : mvn release:perform -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <!-- 项目的SVN基线目录（需保证目录已存在） -->
+                    <tagBase>https://github.com/lyy289065406/expcodes/trunk/java/03-plugin/mojo-release-plugin/tags</tagBase>
+                </configuration>
+            </plugin>
+
+            <!-- 测试插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.7.2</version>
+                <configuration>
+                    <!-- 解决控制台输出乱码问题 -->
+                    <forkMode>once</forkMode>
+                    <argLine>-Dfile.encoding=UTF-8</argLine>
+                    <systemProperties>
+                        <property>
+                            <name>net.sourceforge.cobertura.datafile</name>
+                            <value>target/cobertura/cobertura.ser</value>
+                        </property>
+                    </systemProperties>
+                    <!-- 项目打包时是否跳过d单元测试 -->
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+
+            <!-- 打包源码: 项目发布基线版本时会自动打包源码，不要启用此插件，否则会失败 -->
+            <!-- plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                            <goal>test-jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin -->
+
+            <!-- 打包javadoc: 项目发布基线版本时会自动打包javadoc，不要启用此插件，否则会失败 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- 项目发布插件(自动生成脚本)
+            <plugin>
+                <groupId>exp.libs</groupId>
+                <artifactId>mojo-release-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <id>mrp</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                        <configuration>
+                            <dependType>SELF</dependType>
+                            <jarLibDir>./lib</jarLibDir>
+                            <mavenRepository>D:\mavenRepository</mavenRepository>
+                            <verClass>foo.bar.prj.Version</verClass>
+                            <mainClass>foo.bar.prj.Main</mainClass>
+                            <mainArgs></mainArgs>
+                            <charset>UTF-8</charset>
+                            <jdkPath>java</jdkPath>
+                            <xms>32m</xms>
+                            <xmx>64m</xmx>
+                            <jdkParams></jdkParams>
+                            <threadSuffix></threadSuffix>
+                            <noPrjVer>true</noPrjVer>
+                            <noVerJarRegex>exp-?libs-.*</noVerJarRegex>
+                            <proguard>false</proguard>
+                            <cmpPathMode>STAND</cmpPathMode>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+       -->
+
+        </plugins>
+    </build>
+
+    <!-- 项目发布管理 -->
+    <distributionManagement>
+    
+        <!-- 私服地址 ，公司级基线仓库 -->
+        <repository>
+            <id>Releases</id>
+            <url>http://127.0.0.1:8081/nexus/content/repositories/releases</url>
+        </repository>
+        
+        <!-- 私服地址 ，公司级快照仓库 -->
+        <snapshotRepository>
+            <id>Snapshots</id>
+            <url>http://127.0.0.1:8081/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+</project>

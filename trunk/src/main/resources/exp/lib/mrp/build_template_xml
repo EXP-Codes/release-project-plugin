@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+<project name="@{project_name}@" default="deploy">
+
+    <property name="project.name" value="@{project_name}@@{project_version}@"/>
+    <property name="build.dir" location="build" />
+    <property name="dist.dir" location="dist" />
+    <property name="src.dir" location="@{src_dir}@" />
+    <property name="release.dir" location="release\${project.name}"/>
+@{variable_declaration}@
+    <path id="compile.classpath">
+@{classpath}@    </path>
+
+	<target name="clean" description="Deletes generated directories">
+        <delete dir="${build.dir}" />
+        <delete dir="${dist.dir}" />
+        <delete dir="${release.dir}" />
+    </target> 
+    
+    <target name="init" depends="clean">
+        <mkdir dir="${build.dir}/classes" />
+        <mkdir dir="${dist.dir}" />
+        <mkdir dir="${release.dir}/lib" />
+        <mkdir dir="${release.dir}/conf" />
+        <mkdir dir="${release.dir}/doc" />
+        <mkdir dir="${release.dir}/script" />
+        <mkdir dir="${release.dir}/log" />
+    </target>
+
+    <target name="compile" depends="init" description="Compile Java Code">
+        <javac source="@{jdk_version}@" target="@{jdk_version}@" srcdir="${src.dir}" destdir="${build.dir}/classes" classpathref="compile.classpath" debug="true" debuglevel="source,lines,vars">
+            <compilerarg line=" -encoding @{project_charset}@ " />
+        </javac>
+    </target>
+    
+    <target name="package" depends="compile" description="Generate JAR file">
+        <jar destfile="${dist.dir}/${project.name}.jar" basedir="${build.dir}/classes" />
+    </target>
+
+    <target name="deploy" depends="package" description="">
+        <echo>copy jar files</echo>
+        <copy file="${dist.dir}/${project.name}.jar" todir="${release.dir}/lib" />
+        <copy todir="${release.dir}/lib">
+            <fileset dir="${basedir}/lib">
+            </fileset>
+        </copy>
+
+        <echo>copy script files</echo>
+        <copy todir="${release.dir}">
+            <fileset dir="${basedir}">
+                <exclude name="AutoCreateScript.bat" />
+                <exclude name="build.bat" />
+                <exclude name="build.xml" />
+                <include name="*.bat" />
+                <include name="*.sh" />
+                <include name="update.txt" />
+            </fileset>
+        </copy>
+
+        <echo>copy conf files</echo>
+        <copy todir="${release.dir}/conf">
+            <fileset dir="${basedir}/conf">
+            </fileset>
+        </copy>
+        
+        <echo>copy sql files</echo>
+        <copy todir="${release.dir}/script">
+            <fileset dir="${basedir}/script">
+            </fileset>
+        </copy>
+
+        <echo>copy doc files</echo>
+        <copy todir="${release.dir}/doc">
+            <fileset dir="${basedir}/doc">
+            </fileset>
+        </copy>
+
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+@{end_op}@
+    </target>
+</project>

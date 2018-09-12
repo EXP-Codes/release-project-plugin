@@ -1,0 +1,7 @@
+@echo off
+title @{project_name}@
+
+set /p threadname=<./_threadname
+@{variable_declaration}@
+@{jdk_path}@ -Dtn=%threadname% @{jdk_params}@ -cp @{classpath}@ @{main_method}@ @{main_method_params}@ @{stdout_ctrl}@ @{errout_ctrl}@
+pause
