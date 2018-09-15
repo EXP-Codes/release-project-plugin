@@ -13,7 +13,7 @@
     <!--项目基本信息(必填)-->
     <groupId>exp.libs</groupId>
     <artifactId>mojo-release-plugin</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>maven-plugin</packaging>
 
     <name>mojo-release-plugin</name>
@@ -45,7 +45,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>1.6</jdk.version>
-        <explibs.version>1.0-SNAPSHOT</explibs.version>
+        <explibs.version>1.0</explibs.version>
         <mvn.version>2.0.6</mvn.version>
     </properties>
 
@@ -55,7 +55,7 @@
         <!-- 经验库 -->
         <dependency>
           <groupId>exp.libs</groupId>
-          <artifactId>exp-libs-base</artifactId>
+          <artifactId>exp-libs-simple</artifactId>
           <version>${explibs.version}</version>
         </dependency>
         
