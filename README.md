@@ -65,22 +65,22 @@ Maven项目发布插件
 
 | 参数 | 是否必填 | 取值范围 | 作用 |
 |:----:|:--------:|:--------:|:----:|
-| dependType | 否 | SELF（默认） | &nbsp; |
-| jarLibDir | 否 | ./lib（默认） | &nbsp; |
-| mavenRepository | 否 | D:\mavenRepository（默认） | &nbsp; |
-| verClass | 是 | &nbsp; | &nbsp; |
-| mainClass | 是 | &nbsp; | &nbsp; |
-| mainArgs | 否 | &nbsp; | &nbsp; |
-| charset | 否 | UTF-8（默认） | &nbsp; |
-| jdkPath | 否 | java（默认） | &nbsp; |
-| xms | 否 | 32m（默认） | &nbsp; |
-| xmx | 否 | 64m（默认） | &nbsp; |
-| jdkParams | 否 | &nbsp; | &nbsp; |
-| threadSuffix | 否 | &nbsp; | &nbsp; |
-| noPrjVer | 否 | true（默认） | &nbsp; |
-| noVerJarRegex | 否 | &nbsp; | &nbsp; |
-| proguard | 否 | false（默认） | &nbsp; |
-| cmpPathMode | 否 | STAND（默认） | &nbsp; |
+| dependType | 否 | SELF（默认） | 发布项目后，在启动脚本中\*.jar依赖构件的引用位置。<br/>除非机器有公共库，一般不用改，SELF表示把所有构件复制到项目内。 |
+| jarLibDir | 否 | ./lib（默认） | 复制到\*.jar依赖构件到项目内的目录位置 |
+| mavenRepository | 否 | D:\mavenRepository（默认） | 本地Maven仓库位置 |
+| verClass | 是 | &nbsp; | 版本类路径（用于启动脚本打印项目版本信息） |
+| mainClass | 是 | &nbsp; | 项目入口类路径（用于启动脚本启动程序） |
+| mainArgs | 否 | &nbsp; | 入口类参数表 |
+| charset | 否 | UTF-8（默认） | 项目编码 |
+| jdkPath | 否 | java（默认） | JDK路径（若有配置系统环境变量则无需修改） |
+| xms | 否 | 32m（默认） | 最小堆内存 |
+| xmx | 否 | 64m（默认） | 最大堆内存 |
+| jdkParams | 否 | &nbsp; | JDK参数表 |
+| threadSuffix | 否 | &nbsp; | 进程后缀名。所发布的项目一般用项目名作为进程名，<br/>指定后缀后会自动附加到进程名末尾，一般用于同一台机器部署多套时区分 |
+| noPrjVer | 否 | true（默认） | 所发布的项目jar文件是否带版本号 |
+| noVerJarRegex | 否 | &nbsp; | 命中正则的\*.jar依赖构件去掉版本号 |
+| proguard | 否 | false（默认） | 是否启用混淆打包（需配置proguard插件支持） |
+| cmpPathMode | 否 | STAND（默认） | 启动脚本的压缩路径模式（一般无需修改） |
 
 
 ## 版权声明
