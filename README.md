@@ -22,6 +22,67 @@ Maven项目发布插件
 > 支持混淆打包（使用说明待补充）
 
 
+## 使用说明
+
+在指定项目的pom.xml中添加本插件即可，完整参数配置如下：
+
+```xml
+<plugin>
+    <groupId>exp.libs</groupId>
+    <artifactId>mojo-release-plugin</artifactId>
+    <version>${mrp.version}</version>	<!-- 根据实际情况设置版本号 -->
+    <executions>
+        <execution>
+            <id>mrp</id>
+            <phase>install</phase>
+            <goals>
+                <goal>install</goal>
+            </goals>
+            <configuration>
+                <dependType>SELF</dependType>
+                <jarLibDir>./lib</jarLibDir>
+                <mavenRepository>D:\mavenRepository</mavenRepository>
+                <verClass>foo.bar.prj.Version</verClass>
+                <mainClass>foo.bar.prj.Main</mainClass>
+                <mainArgs></mainArgs>
+                <charset>UTF-8</charset>
+                <jdkPath>java</jdkPath>
+                <xms>32m</xms>
+                <xmx>64m</xmx>
+                <jdkParams></jdkParams>
+                <threadSuffix></threadSuffix>
+                <noPrjVer>true</noPrjVer>
+                <noVerJarRegex>exp-?libs-.*</noVerJarRegex>
+                <proguard>false</proguard>
+                <cmpPathMode>STAND</cmpPathMode>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+```
+
+其中，各个参数说明如下：
+
+| 参数 | 是否必填 | 取值范围 | 作用 |
+|:----:|:--------:|:--------:|:----:|
+| dependType | 否 | SELF（默认） | &nbsp; |
+| jarLibDir | 否 | ./lib（默认） | &nbsp; |
+| mavenRepository | 否 | D:\mavenRepository（默认） | &nbsp; |
+| verClass | 是 | &nbsp; | &nbsp; |
+| mainClass | 是 | &nbsp; | &nbsp; |
+| mainArgs | 否 | &nbsp; | &nbsp; |
+| charset | 否 | UTF-8（默认） | &nbsp; |
+| jdkPath | 否 | java（默认） | &nbsp; |
+| xms | 否 | 32m（默认） | &nbsp; |
+| xmx | 否 | 64m（默认） | &nbsp; |
+| jdkParams | 否 | &nbsp; | &nbsp; |
+| threadSuffix | 否 | &nbsp; | &nbsp; |
+| noPrjVer | 否 | true（默认） | &nbsp; |
+| noVerJarRegex | 否 | &nbsp; | &nbsp; |
+| proguard | 否 | false（默认） | &nbsp; |
+| cmpPathMode | 否 | STAND（默认） | &nbsp; |
+
+
 ## 版权声明
 
 　[![Copyright (C) 2016-2018 By EXP](https://img.shields.io/badge/Copyright%20(C)-2006~2018%20By%20EXP-blue.svg)](http://exp-blog.com)　[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
