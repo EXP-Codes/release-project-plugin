@@ -36,6 +36,7 @@ Maven项目发布插件
             <configuration>
                 <dependType>SELF</dependType>
                 <jarLibDir>./lib</jarLibDir>
+                <cmpPathMode>STAND</cmpPathMode>
                 <mavenRepository>D:\mavenRepository</mavenRepository>
                 <verClass>foo.bar.prj.Version</verClass>
                 <mainClass>foo.bar.prj.Main</mainClass>
@@ -49,7 +50,6 @@ Maven项目发布插件
                 <noPrjVer>true</noPrjVer>
                 <noVerJarRegex>exp-?libs-.*</noVerJarRegex>
                 <proguard>false</proguard>
-                <cmpPathMode>STAND</cmpPathMode>
             </configuration>
         </execution>
     </executions>
@@ -60,8 +60,9 @@ Maven项目发布插件
 
 | 参数 | 必填 | 取值范围/约束 | 作用 |
 |:----:|:--------:|:--------|:----|
-| dependType | 否 | ○ SELF<br/>○ MAVEN | 影响所发布项目的运行脚本中 `-cp *.jar` 所依赖构件的指向位置：<br/><br/>**SELF（默认）** ： <br/>把所有依赖构件都复制到`./lib`目录下，运行脚本直接指向`./lib`。<br/>此方式所发布应用的体积较大，但是可放在任何环境中运行。<br/><br/>**MAVEN** ： <br/>对于通过pom依赖的构件，在运行脚本直接指向本地Maven仓库；<br/>对于不是通过pom依赖的构件，则复制到`./lib`目录后再进行指向。<br/>此方式所发布应用的体积较小，但是运行环境中需存在Maven仓库。 |
+| dependType | 否 | ○ SELF<br/>○ MAVEN | 影响所发布项目的运行脚本中`-cp *.jar`所依赖构件的指向位置：<br/><br/>**SELF（默认）** ： <br/>把所有依赖构件都复制到`./lib`目录下，运行脚本直接指向`./lib`。<br/>此方式所发布应用的体积较大，但是可放在任何环境中运行。<br/><br/>**MAVEN** ： <br/>对于通过pom依赖的构件，在运行脚本直接指向本地Maven仓库；<br/>对于不是通过pom依赖的构件，则复制到`./lib`目录后再进行指向。<br/>此方式所发布应用的体积较小，但是运行环境中需存在Maven仓库。 |
 | jarLibDir | 否 | ./lib（默认） | 复制依赖构件到所发布应用下的目录位置<br/>（影响`dependType`的复制目录，**一般无需改动**） |
+| cmpPathMode | 否 | ○ LEAST<br/>○ STAND<br/>○ MOST | 运行脚本中指向依赖构件路径的压缩模式。若运行脚本中`-cp *.jar`的依赖构件都是绝对路径会导致命令过长不易维护，因此本插件会提取相同前缀的路径并创建对应的路径前缀变量。此配置项的作用仅仅是影响这些变量的多寡而已，无需过于关注。<br/><br/>**默认为STAND，即标准模式，一般无需修改** |
 | mavenRepository | 是 | 绝对路径 | 本地Maven仓库位置，必须与本地部署的`apache-maven`的配置文<br/>件`settings.xml`中的配置项`<localRepository>`取值一致。<br/><br/>win环境推荐值为`D:\mavenRepository`<br/>unix环境推荐值为`/var/loacl/mavenRepository` |
 | verClass | 是 | main类路径 | 运行脚本打印应用版本信息的入口类路径 |
 | mainClass | 是 | main类路径 | 运行脚本启动应用程序的入口类路径 |
@@ -74,8 +75,8 @@ Maven项目发布插件
 | threadSuffix | 否 | &nbsp; | 进程后缀名。<br/>所发布的应用默认用项目名作为进程名，若指定了后缀则会自动<br/>附加到进程名末尾，一般用于同一生产环境下部署多套应用时以<br/>作区分。（实际上在使用本插件发布应用后，也可通过直接修改<br/>`_threadname`文件达到同样目的） |
 | noPrjVer | 否 | true（默认） | 所发布应用的自身jar文件是否去掉版本号。<br/>默认值为true（即去掉版本号），以便升级时无需调整运行脚本 |
 | noVerJarRegex | 否 | &nbsp; | 命中正则的\*.jar依赖构件去掉版本号。<br/>建议配置版本迭代较快的依赖构件，以便升级时无需调整运行脚本 |
-| proguard | 否 | false（默认） | 是否启用混淆打包，可有效防止应用被反编译。<br/>需同时配置`proguard-maven-plugin`插件，但是proguard插件配置<br/>项过于复杂，推荐使用[`Maven项目规范骨架 mojo-archetype`](https://github.com/lyy289065406/mojo-archetype)创建项<br/>目，即可自动生成混淆配置 |
-| cmpPathMode | 否 | STAND（默认） | 启动脚本的压缩路径模式（一般无需修改） |
+| proguard | 否 | false（默认） | 是否启用混淆打包，可有效防止应用被反编译。<br/>需配置`proguard-maven-plugin`插件支持，但是proguard插件配置<br/>项过于复杂，推荐使用[`Maven项目规范骨架 mojo-archetype`](https://github.com/lyy289065406/mojo-archetype)创建项<br/>目，即可自动生成混淆配置。 |
+
 
 
 ## 版权声明
