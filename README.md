@@ -74,7 +74,7 @@ Maven项目发布插件
 | jarLibDir | 否 | ./lib（默认） | 复制依赖构件到所发布应用下的目录位置<br/>（影响`dependType`的复制目录，**一般无需修改**） |
 | cmpPathMode | 否 | ○ LEAST<br/>○ STAND<br/>○ MOST | 运行脚本中指向依赖构件路径的压缩模式。<br/>若运行脚本中`-cp *.jar`的依赖构件都是绝对路径，则会导致命令<br/>过长不易维护，因此本插件会提取相同前缀的路径并创建对应的路<br/>径前缀变量。此配置项的作用仅仅是影响这些变量的多寡而已，无<br/>需过于关注。<br/><br/>**默认为STAND，即标准模式，一般无需修改** |
 | mavenRepository | 是 | 绝对路径 | 本地Maven仓库位置，必须与本地部署的`apache-maven`的配置文<br/>件`settings.xml`中的配置项`<localRepository>`取值一致。<br/><br/>win环境推荐值为`D:\mavenRepository`<br/>unix环境推荐值为`/var/loacl/mavenRepository` |
-| verClass | 是 | main类路径 | 运行脚本打印应用版本信息的入口类路径 |
+| verClass | 是 | main类路径 | 运行脚本打印应用版本信息的入口类路径。<br/>项目版本信息的配置依赖 [`构件经验库 exp-libs`](https://github.com/lyy289065406/exp-libs) 实现，详见 [这里](https://github.com/lyy289065406/exp-libs/tree/master/exp-libs/src/main/java/exp/libs/warp/ver) |
 | mainClass | 是 | main类路径 | 运行脚本启动应用程序的入口类路径 |
 | mainArgs | 否 | &nbsp; | 启动应用程序的main类参数表，按需填写即可 |
 | charset | 否 | &nbsp; | 项目编码，**默认为UTF-8** |
