@@ -74,7 +74,7 @@ Maven项目发布插件
 | threadSuffix | 否 | &nbsp; | 进程后缀名。<br/>所发布的应用默认用项目名作为进程名，若指定了后缀则会自动<br/>附加到进程名末尾，一般用于同一生产环境下部署多套应用时以<br/>作区分。（实际上在使用本插件发布应用后，也可通过直接修改<br/>`_threadname`文件达到同样目的） |
 | noPrjVer | 否 | true（默认） | 所发布应用的自身jar文件是否去掉版本号。<br/>默认值为true（即去掉版本号），以便升级时无需调整运行脚本 |
 | noVerJarRegex | 否 | &nbsp; | 命中正则的\*.jar依赖构件去掉版本号。<br/>建议配置版本迭代较快的依赖构件，以便升级时无需调整运行脚本 |
-| proguard | 否 | false（默认） | 是否启用混淆打包，可有效防止应用被反编译。<br/>需同时配置`proguard-maven-plugin`插件，但是proguard插件配置项过于复杂，推荐使用[`Maven项目规范骨架 mojo-archetype`](https://github.com/lyy289065406/mojo-archetype)创建项目，即可自动生成混淆配置 |
+| proguard | 否 | false（默认） | 是否启用混淆打包，可有效防止应用被反编译。<br/>需同时配置`proguard-maven-plugin`插件，但是proguard插件配置<br/>项过于复杂，推荐使用[`Maven项目规范骨架 mojo-archetype`](https://github.com/lyy289065406/mojo-archetype)创建项<br/>目，即可自动生成混淆配置 |
 | cmpPathMode | 否 | STAND（默认） | 启动脚本的压缩路径模式（一般无需修改） |
 
 
