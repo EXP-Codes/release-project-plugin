@@ -99,7 +99,7 @@ Maven项目发布插件
 　所生成的启动脚本内容：
 
 - win环境启动脚本 start.bat ：<br/>
-```dos
+```shell
 @echo off
 title demo-archetype
 
@@ -178,7 +178,7 @@ fi
 ```
 
 - win环境版本查看脚本 version.bat ：<br/>
-```dos
+```shell
 @echo off
 title demo-archetype
 
