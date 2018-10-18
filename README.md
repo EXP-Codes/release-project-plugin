@@ -20,8 +20,8 @@ Maven项目发布插件
 
 > **注**：
 <br/>　　本插件的主要作用其实就是生成运行脚本与组织应用程序的目录结构
-<br/>　　混淆打包是依赖第三方proguard插件实现的
-<br/>　　应用程序的文件复制（如配置文件、部署文档、数据库脚本等）是依赖第三方Ant插件实现的
+<br/>　　混淆打包是依赖第三方 `proguard-maven-plugin` 插件实现的
+<br/>　　应用程序的部署文件复制（如配置文件、部署文档、数据库脚本等）是依赖第三方 `maven-antrun-plugin` 插件实现的
 <br/>　　版本说明是依赖 [`经验构件库 exp-libs`](https://github.com/lyy289065406/exp-libs) 实现的
 
 
@@ -87,9 +87,173 @@ Maven项目发布插件
 | proguard | 否 | false（默认） | 是否启用混淆打包，可有效防止应用被反编译。<br/>需配置`proguard-maven-plugin`插件支持，但是proguard插件配置<br/>项过于复杂，推荐使用[`Maven项目规范骨架 mojo-archetype`](https://github.com/lyy289065406/mojo-archetype)创建项<br/>目，即可自动生成混淆配置。 |
 
 
-## 附：混淆打包插件 proguard-maven-plugin 的配置说明
+## 附1：混淆打包插件 proguard-maven-plugin 的配置示例
 
 ```xml
+<!-- 混淆打包插件 -->
+<plugin>
+    <groupId>com.github.wvengen</groupId>
+    <artifactId>proguard-maven-plugin</artifactId>
+    <version>2.0.7</version>
+    <executions>
+        <execution>
+            <phase>package</phase>    <!-- 触发混淆打包的maven周期 -->
+            <goals>
+                <goal>proguard</goal>
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+        <!-- attach 的作用是在 install/deploy 时, 将生成的 pg 文件也安装/部署 -->
+        <attach>false</attach>
+        <attachArtifactClassifier>pg</attachArtifactClassifier>
+        
+        <!-- 指定混淆处理所需要的库文件 -->
+        <libs>
+            <lib>${java.home}/lib/rt.jar</lib> <!-- 运行时库rt是必须的 -->
+        </libs>
+        
+        <!-- 指定要做混淆处理的 应用程序jar、war、ear，或目录 -->
+        <injar></injar>
+        
+        <!-- 指定混淆处理完后要输出的jar、war、ear，及其目录名称 -->
+        <outjar>${project.build.finalName}-pg</outjar>
+        
+        <!-- 混淆规则: 详细配置方式参考 ProGuard 官方文档 -->
+        <options>
+            <option>-ignorewarnings</option>         <!-- 忽略混淆警告 -->
+            <!-- option>-dontobfuscate</option -->    <!-- 不混淆输入的类文件 -->
+            <option>-dontshrink</option>               <!-- 不压缩输入的类文件 -->
+            <option>-dontoptimize</option>             <!-- 不做代码优化 -->
+            <option>-dontskipnonpubliclibraryclasses</option>        <!-- 不跳过私有依赖的类库 -->
+            <option>-dontskipnonpubliclibraryclassmembers</option>    <!-- 不跳过私有依赖的类库成员 -->
+            <!-- option>-overloadaggressively</option -->                <!-- 混淆时应用侵入式重载 -->
+            <!-- option>-obfuscationdictionary {filename}</option -->    <!-- 使用给定文件中的关键字作为要混淆方法的名称 -->
+            <!-- option>-applymapping {filename}</option -->            <!-- 重用映射增加混淆 -->
+            <!-- option>-useuniqueclassmembernames</option -->            <!-- 确定统一的混淆类的成员名称来增加混淆 -->
+            <!-- option>-dontusemixedcaseclassnames</option -->            <!-- 混淆时不会产生形形色色的类名 -->
+            <!-- option>-renamesourcefileattribute {string}</option -->    <!-- 设置源文件中给定的字符串常量 -->
+            <!-- option>-flattenpackagehierarchy {package_name}</option -->    <!-- 重新包装所有重命名的包并放在给定的单一包中 -->
+            <!-- option>-repackageclass {package_name}</option -->            <!-- 重新包装所有重命名的类文件中放在给定的单一包中 -->
+
+
+            <!--平行包结构（重构包层次），所有混淆的代码放在 pg 包下 -->
+            <!-- 最好不要随便放, 若有多个项目混淆，不同jar的混淆类可能重名 -->
+            <!-- 建议为{project.root.package}.pg （不存在此变量，此处仅为了说明） -->
+            <option>-repackageclasses exp.libs.pojo.pg</option>
+
+            <!-- 保留[源码] --><!-- 按实际项目切换 -->
+            <!-- option>-keepattributes SourceFile</option -->
+            
+            <!-- 保留[行号] --><!-- 按实际项目切换 -->
+            <option>-keepattributes LineNumberTable</option>
+            
+            <!-- 保留[注释] --><!-- 按实际项目切换 -->
+            <!-- option>-keepattributes *Annotation*</option -->
+            
+            <!-- 保留[注解] --><!-- 按实际项目切换 -->
+            <!-- option>-keepattributes Signature</option -->
+            
+            <!-- 保持[入口类]不变 -->
+            <!-- 按实际项目修正 -->
+            <option>-keep class 
+                exp.libs.pojo.Version,
+                exp.libs.pojo.Main
+            </option>
+            
+            <!-- 保持[Bean类]不变（若框架对 Bean中的内容做了反射处理，则必须保持不变） -->
+            <!-- 按实际项目修正 -->
+            <option>-keep class exp.libs.pojo.bean.** { *;}</option>
+            
+            <!-- 保持[所有入口方法]不变 -->
+            <!-- 固定不变 -->
+            <option>-keepclasseswithmembers public class * { 
+                        public static void main(java.lang.String[]);
+                    }
+            </option>
+            
+            <!-- 保持[对外API的类名和方法名]不变 -->
+            <!-- 按实际项目修正 -->
+            <option>-keep class exp.libs.pojo.api.** { *;}</option>
+            
+            <!-- 保持[所有本地化方法]不变 -->
+            <!-- 固定不变 -->
+            <option>-keepclasseswithmembernames class * {
+                        native &lt;methods&gt;;
+                    }
+            </option>
+            
+            <!-- 保持[所有类成员变量]不变 -->
+            <!-- 按实际项目修正 -->
+            <!-- option>-keepclassmembers class * {
+                        &lt;fields&gt;;
+                    }
+            </option -->
+            
+            <!-- 保持[所有枚举类必须的方法]不变 -->
+            <!-- 固定不变 -->
+            <option>-keepclassmembers class * extends java.lang.Enum {
+                        public static **[] values();
+                        public static ** valueOf(java.lang.String);
+                    }
+            </option>
+            
+            <!-- 保持[所有序列化接口]不变（若项目中不使用序列化，也可注释） -->
+            <!-- 固定不变 -->
+            <option>-keepclassmembers class * implements java.io.Serializable {
+                        static final long serialVersionUID;
+                        static final java.io.ObjectStreamField[] serialPersistentFields;
+                        private void writeObject(java.io.ObjectOutputStream);
+                        private void readObject(java.io.ObjectInputStream);
+                        java.lang.Object writeReplace();
+                        java.lang.Object readResolve();
+                    }
+            </option>
+        </options>
+    </configuration>
+</plugin>
+```
+
+## 附2：部署文件复制插件 maven-antrun-plugin 的配置示例
+
+```xml
+<!-- Ant插件：项目部署文件复制 -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-antrun-plugin</artifactId>
+    <version>1.7</version>
+    <executions>
+        <execution>
+            <id>ant-build</id>
+            <phase>install</phase>
+            <goals>
+                <goal>run</goal>
+            </goals>
+            <configuration>
+                <target>
+                    <echo>拷贝数据库脚本</echo>
+                    <copy todir="${release.dir}/script">
+                        <fileset dir="script"></fileset>
+                    </copy>
+                    <echo>拷贝项目配置文件</echo>
+                    <copy todir="${release.dir}/conf">
+                        <fileset dir="conf" />
+                    </copy>
+                    <echo>拷贝文档</echo>
+                    <copy todir="${release.dir}/doc/04_维护文档">
+                        <fileset dir="doc/04_维护文档" />
+                    </copy>
+                    <copy todir="${release.dir}/doc/06_使用文档">
+                        <fileset dir="doc/06_使用文档" />
+                    </copy>
+                    <copy todir="${release.dir}/doc/07_演示文档">
+                        <fileset dir="doc/07_演示文档" />
+                    </copy>
+                </target>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
 ```
 
 
