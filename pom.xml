@@ -218,41 +218,6 @@
                     </execution>
                 </executions>
             </plugin>
-            
-            <!-- 项目发布插件(自动生成脚本)
-            <plugin>
-                <groupId>exp.libs</groupId>
-                <artifactId>mojo-release-plugin</artifactId>
-                <version>1.0</version>
-                <executions>
-                    <execution>
-                        <id>mrp</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>install</goal>
-                        </goals>
-                        <configuration>
-                            <dependType>SELF</dependType>
-                            <jarLibDir>./lib</jarLibDir>
-                            <mavenRepository>D:\mavenRepository</mavenRepository>
-                            <verClass>foo.bar.prj.Version</verClass>
-                            <mainClass>foo.bar.prj.Main</mainClass>
-                            <mainArgs></mainArgs>
-                            <charset>UTF-8</charset>
-                            <jdkPath>java</jdkPath>
-                            <xms>32m</xms>
-                            <xmx>64m</xmx>
-                            <jdkParams></jdkParams>
-                            <threadSuffix></threadSuffix>
-                            <noPrjVer>true</noPrjVer>
-                            <noVerJarRegex>exp-?libs-.*</noVerJarRegex>
-                            <proguard>false</proguard>
-                            <cmpPathMode>STAND</cmpPathMode>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-       -->
 
         </plugins>
     </build>
