@@ -58,11 +58,11 @@ Maven项目发布插件
 
 其中，各个参数说明如下：
 
-| 参数 | 是否必填 | 取值范围 | 作用 |
+| 参数 | 必填 | 取值范围/约束 | 作用 |
 |:----:|:--------:|:--------|:----|
 | dependType | 否 | ○ SELF（默认）<br/>○ MAVEN | 影响所发布项目的运行脚本中 `-cp *.jar` 所依赖构件的指向位置：<br/><br/>**SELF** ： 把所有依赖构件都复制到`./lib`目录下，运行脚本直接指向`./lib`。此方式所发布应用的体积较大，但是可放在任何环境中运行。<br/><br/>**MAVEN** ： 对于通过pom依赖的构件，在运行脚本直接指向本地Maven仓库；对于不是通过pom依赖的构件，则复制到`./lib`目录下，在运行脚本中指向`./lib`。此方式所发布应用的体积较小，但是运行环境中需存在Maven仓库。 |
 | jarLibDir | 否 | ./lib（默认） | 复制到\*.jar依赖构件到项目内的目录位置 |
-| mavenRepository | 否 | D:\mavenRepository（默认） | 本地Maven仓库位置 |
+| mavenRepository | 否 | 绝对路径 | 本地Maven仓库位置，默认为D:\mavenRepository |
 | verClass | 是 | &nbsp; | 版本类路径（用于启动脚本打印项目版本信息） |
 | mainClass | 是 | &nbsp; | 项目入口类路径（用于启动脚本启动程序） |
 | mainArgs | 否 | &nbsp; | 入口类参数表 |
