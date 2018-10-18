@@ -19,7 +19,7 @@ Maven项目发布插件
 
 
 > **注**：
-<br/>　　本插件的主要作用其实就是生成运行脚本与组织应用程序的目录结构
+<br/>　　本插件的主要作用其实就是**生成运行脚本**与**组织应用程序的目录结构**
 <br/>　　混淆打包是依赖第三方 `proguard-maven-plugin` 插件实现的
 <br/>　　应用程序的部署文件复制（如配置文件、部署文档、数据库脚本等）是依赖第三方 `maven-antrun-plugin` 插件实现的
 <br/>　　版本说明是依赖 [`经验构件库 exp-libs`](https://github.com/lyy289065406/exp-libs) 实现的
@@ -28,7 +28,8 @@ Maven项目发布插件
 
 ## 使用说明
 
-　本插件通过 `Maven install` 指令触发，在指定项目的 pom.xml 中添加本插件即可，完整参数配置如下：
+　在指定项目的 `pom.xml` 中添加本插件配置后，**通过 `Maven install` 指令触发**。
+<br/>　本插件的完整参数配置如下：
 
 ```xml
 <plugin>
@@ -85,6 +86,22 @@ Maven项目发布插件
 | noPrjVer | 否 | true（默认） | 所发布应用的自身jar文件是否去掉版本号。<br/>默认值为true（即去掉版本号），以便升级时无需调整运行脚本 |
 | noVerJarRegex | 否 | &nbsp; | 命中**正则表达式**的\*.jar依赖构件去掉版本号。<br/>建议配置版本迭代较快的依赖构件，以便升级时无需调整运行脚本 |
 | proguard | 否 | false（默认） | 是否启用混淆打包，可有效防止应用被反编译。<br/>需配置`proguard-maven-plugin`插件支持，但是proguard插件配置<br/>项过于复杂，推荐使用[`Maven项目规范骨架 mojo-archetype`](https://github.com/lyy289065406/mojo-archetype)创建项<br/>目，即可自动生成混淆配置。 |
+
+
+## 运行效果
+
+
+所生成的启动脚本内容示例：
+```dos
+@echo off
+title demo-archetype
+
+set /p threadname=<.\_threadname
+set lib0=.\lib
+
+java -Dtn=%threadname% -Xms32m -Xmx64m  -cp %lib0%\demo-archetype.jar;%lib0%\exp-libs.jar;%lib0%\jvm-agent-1.0.jar;%lib0%\jep-3.3.1.jar;%lib0%\ehcache-2.9.1.jar;%lib0%\beauty-eye-3.7.jar;%lib0%\draw2d-1.0.0.jar;%lib0%\jGraph-1.0.0.jar;%lib0%\schemaeditor-1.0.0.jar;%lib0%\javase-2.2.jar;%lib0%\core-2.2.jar;%lib0%\dom4j-1.6.1.jar;%lib0%\javaini-1.1.0.0.jar;%lib0%\proxool-0.9.1.jar;%lib0%\proxool-cglib-0.9.1.jar;%lib0%\jedis-2.9.0.jar;%lib0%\commons-pool2-2.4.2.jar;%lib0%\mysql-connector-java-5.1.29.jar;%lib0%\sqlite-jdbc-3.7.2.jar;%lib0%\ojdbc-14.jar;%lib0%\poi-ooxml-3.9.jar;%lib0%\poi-3.9.jar;%lib0%\poi-ooxml-schemas-3.9.jar;%lib0%\dom4j-1.6.1.jar;%lib0%\quartz-2.2.1.jar;%lib0%\c3p0-0.9.1.1.jar;%lib0%\json-lib-2.4-jdk15.jar;%lib0%\commons-beanutils-1.8.0.jar;%lib0%\commons-collections-3.2.1.jar;%lib0%\commons-lang-2.5.jar;%lib0%\ezmorph-1.0.6.jar;%lib0%\jackson-xc-1.9.9.jar;%lib0%\jackson-core-asl-1.9.9.jar;%lib0%\jackson-mapper-asl-1.9.9.jar;%lib0%\jackson-smile-1.9.9.jar;%lib0%\jackson-mrbean-1.9.9.jar;%lib0%\jackson-jaxrs-1.9.9.jar;%lib0%\jackson-core-lgpl-1.9.9.jar;%lib0%\jackson-mapper-lgpl-1.9.9.jar;%lib0%\commons-httpclient-3.1-rc1.jar;%lib0%\commons-net-3.3.jar;%lib0%\bcprov-jdk15on-1.54.jar;%lib0%\base64-1.0.jar;%lib0%\jsch-0.1.29.jar;%lib0%\mail-1.4.1.jar;%lib0%\activation-1.1.1.jar;%lib0%\activemq-all-5.4.2.jar;%lib0%\commons-compress-1.8.1.jar;%lib0%\commons-dbutils-1.5.jar;%lib0%\commons-io-2.4.jar;%lib0%\commons-logging-1.1.3.jar;%lib0%\commons-lang3-3.3.jar;%lib0%\jai-imageio-1.1-alpha-alpha.jar;%lib0%\tensorflow-1.6.0-rc1.jar;%lib0%\libtensorflow-1.6.0-rc1.jar;%lib0%\libtensorflow_jni-1.6.0-rc1.jar;%lib0%\Java-WebSocket-1.3.4.jar;%lib0%\selenium-java-2.53.0.jar;%lib0%\selenium-support-2.53.0.jar;%lib0%\selenium-leg-rc-2.53.0.jar;%lib0%\phantomjsdriver-1.2.1.jar;%lib0%\selenium-remote-driver-2.44.0.jar;%lib0%\cglib-nodep-2.1_3.jar;%lib0%\gson-2.3.jar;%lib0%\selenium-api-2.44.0.jar;%lib0%\guava-18.0.jar;%lib0%\commons-exec-1.1.jar;%lib0%\jna-3.4.0.jar;%lib0%\platform-3.4.0.jar;%lib0%\selenium-chrome-driver-2.44.0.jar;%lib0%\selenium-htmlunit-driver-2.44.0.jar;%lib0%\htmlunit-2.15.jar;%lib0%\xalan-2.7.1.jar;%lib0%\serializer-2.7.1.jar;%lib0%\httpmime-4.3.3.jar;%lib0%\htmlunit-core-js-2.15.jar;%lib0%\xercesImpl-2.11.0.jar;%lib0%\xml-apis-1.4.01.jar;%lib0%\nekohtml-1.9.21.jar;%lib0%\cssparser-0.9.14.jar;%lib0%\sac-1.3.jar;%lib0%\jetty-websocket-8.1.15.v20140411.jar;%lib0%\jetty-util-8.1.15.v20140411.jar;%lib0%\jetty-io-8.1.15.v20140411.jar;%lib0%\httpclient-4.3.4.jar;%lib0%\wsdl4j-1.6.2.jar;%lib0%\jabref-2.9.2.jar;%lib0%\soapui-1.7.1.jar;%lib0%\xmlbeans-2.6.0.jar;%lib0%\stax-api-1.0.1.jar;%lib0%\soapui-xmlbeans-1.7.jar;%lib0%\commons-codec-1.8.jar;%lib0%\log4j-1.2.17.jar;%lib0%\axis2-adb-1.6.2.jar;%lib0%\axis2-kernel-1.6.2.jar;%lib0%\axiom-api-1.2.13.jar;%lib0%\wsdl4j-1.6.2.jar;%lib0%\neethi-3.0.2.jar;%lib0%\xmlschema-core-2.1.0.jar;%lib0%\axis2-transport-http-1.6.2.jar;%lib0%\httpcore-4.0.jar;%lib0%\axis2-transport-local-1.6.2.jar;%lib0%\cxf-rt-frontend-jaxws-3.0.1.jar;%lib0%\asm-3.3.1.jar;%lib0%\cxf-core-3.0.1.jar;%lib0%\woodstox-core-asl-4.4.0.jar;%lib0%\stax2-api-3.1.4.jar;%lib0%\cxf-rt-bindings-soap-3.0.1.jar;%lib0%\cxf-rt-wsdl-3.0.1.jar;%lib0%\cxf-rt-databinding-jaxb-3.0.1.jar;%lib0%\jaxb-core-2.1.14.jar;%lib0%\cxf-rt-frontend-simple-3.0.1.jar;%lib0%\cxf-rt-transports-http-3.0.1.jar;%lib0%\jetty-http-8.1.15.v20140411.jar;%lib0%\slf4j-api-1.7.5.jar;%lib0%\logback-core-1.0.13.jar;%lib0%\logback-classic-1.0.13.jar;%lib0%\logback-access-1.0.13.jar;%lib0%\janino-2.7.8.jar;%lib0%\commons-compiler-2.7.8.jar; exp.libs.pojo.Main   2>err.log
+pause
+```
 
 
 ## 附1：混淆打包插件 proguard-maven-plugin 的配置示例
