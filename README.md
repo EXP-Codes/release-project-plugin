@@ -62,7 +62,7 @@ Maven项目发布插件
 |:----:|:--------:|:--------|:----|
 | dependType | 否 | ○ SELF<br/>○ MAVEN | 影响所发布项目的运行脚本中 `-cp *.jar` 所依赖构件的指向位置：<br/><br/>**SELF（默认）** ： <br/>把所有依赖构件都复制到`./lib`目录下，运行脚本直接指向`./lib`。<br/>此方式所发布应用的体积较大，但是可放在任何环境中运行。<br/><br/>**MAVEN** ： <br/>对于通过pom依赖的构件，在运行脚本直接指向本地Maven仓库；<br/>对于不是通过pom依赖的构件，则复制到`./lib`目录后再进行指向。<br/>此方式所发布应用的体积较小，但是运行环境中需存在Maven仓库。 |
 | jarLibDir | 否 | ./lib（默认） | 复制依赖构件到发布应用的目录<br/>（影响`dependType`的复制目录，一般无需改动） |
-| mavenRepository | 否 | 绝对路径 | 本地Maven仓库位置，必须与本地部署的`apache-maven`的<br/>配置文件`settings.xml`中的&lt;localRepository&gt;配置项一致。<br/>默认值为D:\mavenRepository |
+| mavenRepository | 否 | 绝对路径 | 本地Maven仓库位置，必须与本地部署的`apache-maven`的配置文<br/>件`settings.xml`中的配置项`&lt;localRepository&gt;`取值一致。<br/>win环境推荐值为`D:\mavenRepository`，unix环境推荐值为`/var/loacl/mavenRepository` |
 | verClass | 是 | &nbsp; | 版本类路径（用于启动脚本打印项目版本信息） |
 | mainClass | 是 | &nbsp; | 项目入口类路径（用于启动脚本启动程序） |
 | mainArgs | 否 | &nbsp; | 入口类参数表 |
