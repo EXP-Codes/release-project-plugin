@@ -61,16 +61,16 @@ Maven项目发布插件
 | 参数 | 必填 | 取值范围/约束 | 作用 |
 |:----:|:--------:|:--------|:----|
 | dependType | 否 | ○ SELF<br/>○ MAVEN | 影响所发布项目的运行脚本中 `-cp *.jar` 所依赖构件的指向位置：<br/><br/>**SELF（默认）** ： <br/>把所有依赖构件都复制到`./lib`目录下，运行脚本直接指向`./lib`。<br/>此方式所发布应用的体积较大，但是可放在任何环境中运行。<br/><br/>**MAVEN** ： <br/>对于通过pom依赖的构件，在运行脚本直接指向本地Maven仓库；<br/>对于不是通过pom依赖的构件，则复制到`./lib`目录后再进行指向。<br/>此方式所发布应用的体积较小，但是运行环境中需存在Maven仓库。 |
-| jarLibDir | 否 | ./lib（默认） | 复制依赖构件到发布应用的目录<br/>（影响`dependType`的复制目录，**一般无需改动**） |
-| mavenRepository | 否 | 绝对路径 | 本地Maven仓库位置，必须与本地部署的`apache-maven`的配置文<br/>件`settings.xml`中的配置项`<localRepository>`取值一致。<br/><br/>win环境推荐值为`D:\mavenRepository`<br/>unix环境推荐值为`/var/loacl/mavenRepository` |
+| jarLibDir | 否 | ./lib（默认） | 复制依赖构件到所发布应用下的目录位置<br/>（影响`dependType`的复制目录，**一般无需改动**） |
+| mavenRepository | 是 | 绝对路径 | 本地Maven仓库位置，必须与本地部署的`apache-maven`的配置文<br/>件`settings.xml`中的配置项`<localRepository>`取值一致。<br/><br/>win环境推荐值为`D:\mavenRepository`<br/>unix环境推荐值为`/var/loacl/mavenRepository` |
 | verClass | 是 | main类路径 | 运行脚本打印应用版本信息的入口类路径 |
 | mainClass | 是 | main类路径 | 运行脚本启动应用程序的入口类路径 |
 | mainArgs | 否 | &nbsp; | 启动应用程序的main类参数表，按需填写即可 |
 | charset | 否 | &nbsp; | 项目编码，**默认为UTF-8** |
-| jdkPath | 否 | java（默认） | JDK路径（若有配置系统环境变量则无需修改） |
-| xms | 否 | 32m（默认） | 最小堆内存 |
-| xmx | 否 | 64m（默认） | 最大堆内存 |
-| jdkParams | 否 | &nbsp; | JDK参数表 |
+| jdkPath | 否 | java（默认） | JRE路径，亦即`%JAVA_HOME%/bin/java`路径。<br/>由于配置了系统环境变量，一般无需修改。但若存在多个JRE版本，则可按需修改 |
+| xms | 否 | 32m（默认） | 应用运行时的最小堆内存 |
+| xmx | 否 | 64m（默认） | 应用运行时的最大堆内存 |
+| jdkParams | 否 | &nbsp; | JVM参数表，按需填写即可 |
 | threadSuffix | 否 | &nbsp; | 进程后缀名。所发布的项目一般用项目名作为进程名，<br/>指定后缀后会自动附加到进程名末尾，一般用于同一台机器部署多套时区分 |
 | noPrjVer | 否 | true（默认） | 所发布的项目jar文件是否带版本号 |
 | noVerJarRegex | 否 | &nbsp; | 命中正则的\*.jar依赖构件去掉版本号 |
