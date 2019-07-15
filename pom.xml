@@ -13,7 +13,7 @@
     <!--项目基本信息(必填)-->
     <groupId>exp.libs</groupId>
     <artifactId>mojo-release-plugin</artifactId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>mojo-release-plugin</name>
@@ -44,8 +44,8 @@
     <!-- 变量定义 -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jdk.version>1.6</jdk.version>
-        <explibs.version>1.0</explibs.version>
+        <jdk.version>1.8</jdk.version>
+        <explibs.version>1.2-SNAPSHOT</explibs.version>
         <mvn.version>2.0.6</mvn.version>
     </properties>
 
@@ -155,12 +155,11 @@
             </plugin>
 
             <!-- 版本打包插件，在dos跳转到项目根目录，依次执行（需保证没有引用快照、本地与SVN服务器内容完全一致）: 
-                1 发布基线到svn: mvn release:prepare 
-                2 发布引用到私服 : mvn release:perform -->
+	                1 发布基线到svn: mvn release:prepare 
+	                2 发布引用到私服 : mvn release:perform -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.3.2</version>
                 <configuration>
                     <!-- 项目的SVN基线目录（需保证目录已存在） -->
                     <tagBase>https://github.com/lyy289065406/expcodes/trunk/java/03-plugin/mojo-release-plugin/tags</tagBase>
@@ -171,7 +170,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.7.2</version>
                 <configuration>
                     <!-- 解决控制台输出乱码问题 -->
                     <forkMode>once</forkMode>
@@ -203,21 +201,6 @@
                     </execution>
                 </executions>
             </plugin -->
-
-            <!-- 打包javadoc: 项目发布基线版本时会自动打包javadoc，不要启用此插件，否则会失败 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
 
         </plugins>
     </build>

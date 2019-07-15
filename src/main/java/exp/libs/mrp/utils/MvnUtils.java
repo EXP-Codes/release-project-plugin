@@ -29,8 +29,8 @@ public class MvnUtils {
 	
 	/**
 	 * 获取pom中依赖构件的在Maven仓库中的绝对路径（有序）
-	 * @param mvnPrj
-	 * @return
+	 * @param mvnPrj maven项目对象
+	 * @return 依赖构件的在Maven仓库中的绝对路径（有序）
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<String> getArtifactPaths(MavenProject mvnPrj) {
