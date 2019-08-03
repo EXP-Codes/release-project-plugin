@@ -45,7 +45,6 @@ public class ScriptBuilder {
 	
 	public static boolean exec() {
 		boolean isOk = true;
-		isOk &= buildAppPath();
 		isOk &= buildThreadName();
 		isOk &= buildUnixPid();
 		isOk &= buildUnixStart();
@@ -54,12 +53,6 @@ public class ScriptBuilder {
 		isOk &= buildDosStart();
 		isOk &= buildDosVersion();
 		return isOk;
-	}
-	
-	private static boolean buildAppPath() {
-		Template tpl = new Template(TplNames.APP_PATH_TEMPLATE, Charset.ISO);
-		return createScript(ScriptNames.APP_PATH, 
-				StandardUtils.dos2unix(tpl.getContent()));
 	}
 	
 	private static boolean buildThreadName() {

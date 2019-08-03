@@ -1,11 +1,6 @@
 #!/bin/bash
 # @{project_name}@
 
-export app_path=$(cat ./_app_path|grep -v ^#)
-if [ $app_path ];then
-    cd $app_path
-fi
-
 export threadname=$(cat ./_threadname)
 @{variable_declaration}@
 PID=`ps -ef|grep Dtn=@{ver}@${threadname}|grep -v grep|awk '{print $2}'`

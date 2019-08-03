@@ -55,11 +55,6 @@ public class ScriptNames {
 	public final static String STARTCHECK_SH = "startcheck.sh";
 	
 	/**
-	 * 程序位置声明脚本
-	 */
-	public final static String APP_PATH = "_app_path";
-	
-	/**
 	 * 线程名声明脚本
 	 */
 	public final static String THREAD_NAME = "_threadname";

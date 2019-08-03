@@ -27,11 +27,6 @@ public class TplNames {
 	public final static String BUILD_TEMPLATE_XML = PACKAGE.concat("build_template_xml");
 	
 	/**
-	 * 程序位置脚本模板名称
-	 */
-	public final static String APP_PATH_TEMPLATE = PACKAGE.concat("app_path_template");
-	
-	/**
 	 * 线程名脚本模板名称
 	 */
 	public final static String THREADNAME_TEMPLATE = PACKAGE.concat("threadname_template");
