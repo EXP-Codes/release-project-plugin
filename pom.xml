@@ -2,43 +2,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-    <!-- 如果parent标签有错忽略即可: Multiple annotations found at this line: - Plugin execution not covered by lifecy  -->
-    <!-- m2Eclipse插件与pom不兼容而已 -->
     <parent>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugins</artifactId>
         <version>16</version>
     </parent>
 
-    <!--项目基本信息(必填)-->
     <groupId>exp.libs</groupId>
     <artifactId>mojo-release-plugin</artifactId>
     <version>2.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>mojo-release-plugin</name>
-    <description>Maven项目发布插件</description>
-    <url>https://github.com/lyy289065406/expcodes/trunk/java/03-plugin/mojo-release-plugin/trunk</url>
+    <description>Maven 项目一键发布插件</description>
+    <url>https://github.com/lyy289065406/mojo-release-plugin</url>
     <inceptionYear>2016-01-01</inceptionYear>
 
-    <!--项目的问题管理系统(可选)-->
-    <issueManagement>
-        <system>Jenkins</system>
-        <url>http://127.0.0.1:8080/job/exp-libs/</url>
-    </issueManagement>
-    
-    <!--项目的问题追踪系统(可选)-->
-    <ciManagement>
-        <system>jenkins</system>
-        <url>http://127.0.0.1:8080/job/exp-libs/</url>
-    </ciManagement>
-    
     <!-- 软件配置管理 -->
     <scm>
         <!-- 项目SVN主干目录（需保证目录已存在） -->
-        <connection>scm:svn:https://github.com/lyy289065406/expcodes/trunk/java/03-plugin/mojo-release-plugin/trunk</connection>
-        <developerConnection>scm:svn:https://github.com/lyy289065406/expcodes/trunk/java/03-plugin/mojo-release-plugin/trunk</developerConnection>
-        <url>scm:svn:https://github.com/lyy289065406/expcodes/trunk/java/03-plugin/mojo-release-plugin/trunk</url>
+        <connection>scm:svn:https://github.com/lyy289065406/mojo-release-plugin</connection>
+        <developerConnection>scm:svn:https://github.com/lyy289065406/mojo-release-plugin</developerConnection>
+        <url>scm:svn:https://github.com/lyy289065406/mojo-release-plugin</url>
     </scm>
 
     <!-- 变量定义 -->
