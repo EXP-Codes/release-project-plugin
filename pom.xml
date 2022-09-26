@@ -1,36 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
-    <parent>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-plugins</artifactId>
-        <version>16</version>
-    </parent>
 
-    <groupId>exp.libs</groupId>
-    <artifactId>mojo-release-plugin</artifactId>
-    <version>2.0-SNAPSHOT</version>
-    <packaging>maven-plugin</packaging>
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
 
-    <name>mojo-release-plugin</name>
-    <description>Maven 项目一键发布插件</description>
-    <url>https://github.com/lyy289065406/mojo-release-plugin</url>
-    <inceptionYear>2016-01-01</inceptionYear>
+    <developers>
+        <developer>
+            <name>EXP</name>
+            <email>exp.lqb@foxmail.com</email>
+        </developer>
+    </developers>
 
-    <!-- 软件配置管理 -->
     <scm>
-        <!-- 项目SVN主干目录（需保证目录已存在） -->
-        <connection>scm:svn:https://github.com/lyy289065406/mojo-release-plugin</connection>
-        <developerConnection>scm:svn:https://github.com/lyy289065406/mojo-release-plugin</developerConnection>
-        <url>scm:svn:https://github.com/lyy289065406/mojo-release-plugin</url>
+        <connection>scm:git:https://github.com/lyy289065406/mojo-release-plugin.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:lyy289065406/exp-libs-refactor.git</developerConnection>
+        <url>https://github.com/lyy289065406/mojo-release-plugin</url>
     </scm>
 
-    <!-- 变量定义 -->
+    <!-- 发布到 sonatype 中央仓库要求必须有这 3 个属性 -->
+    <name>mojo-release-plugin</name>
+    <description>（非 Spring 纯后端） Maven 项目一键发布插件</description>
+    <url>https://github.com/lyy289065406/exp-libs-refactor</url>
+
+    <groupId>com.exp-blog</groupId>
+    <artifactId>mojo-release-plugin</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+
+    <!-- 打包为 maven 插件 -->
+    <packaging>maven-plugin</packaging>
+    
+
+<!--    <parent>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-plugins</artifactId>-->
+<!--        <version>16</version>-->
+<!--    </parent>-->
+
+
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>1.8</jdk.version>
-        <explibs.version>1.2-SNAPSHOT</explibs.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mvn.version>2.0.6</mvn.version>
     </properties>
 
@@ -39,9 +55,9 @@
     
         <!-- 经验库 -->
         <dependency>
-          <groupId>exp.libs</groupId>
-          <artifactId>exp-libs-simple</artifactId>
-          <version>${explibs.version}</version>
+            <groupId>com.exp-blog</groupId>
+            <artifactId>exp-libs-base</artifactId>
+            <version>2.1.0</version>
         </dependency>
         
         <!-- Maven构件 -->
@@ -108,102 +124,219 @@
         
         <!-- 单元测试 -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.2</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
-    <!-- 项目构建 -->
     <build>
         <plugins>
-            
-            <!-- 指定项目JDK版本 -->
+            <!-- 编译 maven 工程 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.0</version>
                 <configuration>
-                    <source>${jdk.version}</source>
-                    <target>${jdk.version}</target>
-                </configuration>
-            </plugin>
-            
-            <!-- 跳过maven构件加密，否则自动版本提交可能会失败 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
 
-            <!-- 版本打包插件，在dos跳转到项目根目录，依次执行（需保证没有引用快照、本地与SVN服务器内容完全一致）: 
-	                1 发布基线到svn: mvn release:prepare 
-	                2 发布引用到私服 : mvn release:perform -->
+            <!-- 生成 javadoc -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.2</version>
                 <configuration>
-                    <!-- 项目的SVN基线目录（需保证目录已存在） -->
-                    <tagBase>https://github.com/lyy289065406/expcodes/trunk/java/03-plugin/mojo-release-plugin/tags</tagBase>
-                </configuration>
-            </plugin>
+                    <charset>${project.build.sourceEncoding}</charset>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <docencoding>${project.build.sourceEncoding}</docencoding>
 
-            <!-- 测试插件 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <!-- 解决控制台输出乱码问题 -->
-                    <forkMode>once</forkMode>
-                    <argLine>-Dfile.encoding=UTF-8</argLine>
-                    <systemProperties>
-                        <property>
-                            <name>net.sourceforge.cobertura.datafile</name>
-                            <value>target/cobertura/cobertura.ser</value>
-                        </property>
-                    </systemProperties>
-                    <!-- 项目打包时是否跳过d单元测试 -->
-                    <skipTests>true</skipTests>
+                    <!-- 从JDK8开始, Javadoc中添加了doclint, 目的是旨在获得符合W3C HTML 4.01标准规范的HTML文档 -->
+                    <!-- 简而言之Javadoc不允许出现html相关的元素, 若旧注释含有这些元素又不想修改, 只能关闭doclint -->
+                    <additionalOptions>
+                        <additionalOption>-Xdoclint:none</additionalOption>
+                    </additionalOptions>
                 </configuration>
-            </plugin>
-
-            <!-- 打包源码: 项目发布基线版本时会自动打包源码，不要启用此插件，否则会失败 -->
-            <!-- plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.1.2</version>
                 <executions>
                     <execution>
-                        <id>attach-sources</id>
-                        <phase>verify</phase>
+                        <id>attach-javadocs</id>
                         <goals>
-                            <goal>jar-no-fork</goal>
-                            <goal>test-jar-no-fork</goal>
+                            <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>
-            </plugin -->
+            </plugin>
 
+            <!-- 生成源码 jar 包 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- GPG 签名 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 分发管理和认证：用于部署和发布到中央仓库 https://mvnrepository.com/ -->
+            <!-- 此插件对于发布 SNAPSHOT 版本时不会触发 -->
+            <!-- 其作用是自动在 https://s01.oss.sonatype.org/ 的 Staging Repositories 中 close 并 release，无需手动干预 -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.13</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>sonatype</serverId>   <!-- 要与 distributionManagement 定义的 id 一致 -->
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
-    <!-- 项目发布管理 -->
     <distributionManagement>
-    
-        <!-- 私服地址 ，公司级基线仓库 -->
-        <repository>
-            <id>Releases</id>
-            <url>http://127.0.0.1:8081/nexus/content/repositories/releases</url>
-        </repository>
-        
-        <!-- 私服地址 ，公司级快照仓库 -->
         <snapshotRepository>
-            <id>Snapshots</id>
-            <url>http://127.0.0.1:8081/nexus/content/repositories/snapshots</url>
+            <id>sonatype</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
         </snapshotRepository>
+        <repository>
+            <id>sonatype</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
     </distributionManagement>
+
+    <!-- =========================================================================== -->
+    <!-- 不能修改，整个 profile 都是用于 Github Actions 命令行发布的 （主要是 GPG 签名插件需要配置非交互模式输入密码） -->
+    <!-- 命令行使用 mvn clean deploy -P toSonatype 即可指定此配置 -->
+    <profiles>
+        <profile>
+            <id>toSonatype</id>
+            <build>
+                <plugins>
+                    <!-- 编译 maven 工程 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.10.0</version>
+                        <configuration>
+                            <source>${maven.compiler.source}</source>
+                            <target>${maven.compiler.target}</target>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                        </configuration>
+                    </plugin>
+
+                    <!-- 生成 javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.3.2</version>
+                        <configuration>
+                            <charset>${project.build.sourceEncoding}</charset>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                            <docencoding>${project.build.sourceEncoding}</docencoding>
+
+                            <!-- 从JDK8开始, Javadoc中添加了doclint, 目的是旨在获得符合W3C HTML 4.01标准规范的HTML文档 -->
+                            <!-- 简而言之Javadoc不允许出现html相关的元素, 若旧注释含有这些元素又不想修改, 只能关闭doclint -->
+                            <additionalOptions>
+                                <additionalOption>-Xdoclint:none</additionalOption>
+                            </additionalOptions>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- 生成源码 jar 包 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- GPG 签名 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <!-- 必须配置，用于 gpg 非交互式密码输入 -->
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- 分发管理和认证：用于部署和发布到中央仓库 https://mvnrepository.com/ -->
+                    <!-- 此插件对于发布 SNAPSHOT 版本时不会触发 -->
+                    <!-- 其作用是自动在 https://s01.oss.sonatype.org/ 的 Staging Repositories 中 close 并 release，无需手动干预 -->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.13</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>sonatype</serverId>   <!-- 要与 distributionManagement 定义的 id 一致 -->
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
