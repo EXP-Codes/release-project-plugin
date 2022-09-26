@@ -1,21 +1,19 @@
 # mojo-release-plugin
-Maven项目发布插件
+
+> Maven 项目一键发布插件
 
 ------
 
-
 ## 运行环境
 
-　![](https://img.shields.io/badge/Maven-3.2.5%2B-brightgreen.svg)  ![](https://img.shields.io/badge/JDK-1.7%2B-brightgreen.svg)
+![](https://img.shields.io/badge/Maven-3.2.5%2B-brightgreen.svg)  ![](https://img.shields.io/badge/JDK-1.8%2B-brightgreen.svg)
 
 
 ## 软件介绍
 
-
 - 一键快速发布一个可运行于生成环境的应用程序
 - 支持混淆打包以避免被反编译
 - 自动集成依赖构件、配置文件、部署文档、数据库脚本、版本说明、运行脚本等
-
 
 
 > **注**：

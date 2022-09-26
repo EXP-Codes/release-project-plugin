@@ -13,7 +13,7 @@
     <!--项目基本信息(必填)-->
     <groupId>exp.libs</groupId>
     <artifactId>mojo-release-plugin</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>2.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>mojo-release-plugin</name>
