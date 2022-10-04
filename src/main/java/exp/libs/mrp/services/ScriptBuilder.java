@@ -10,11 +10,11 @@ import exp.libs.mrp.cache.JarMgr;
 import exp.libs.mrp.envm.Placeholders;
 import exp.libs.mrp.envm.ScriptNames;
 import exp.libs.mrp.envm.TplNames;
-import exp.libs.utils.format.StandardUtils;
-import exp.libs.utils.io.FileUtils;
+import exp.libs.utils.file.FileTemplate;
+import exp.libs.utils.file.FileUtils;
+import exp.libs.utils.os.OSUtils;
 import exp.libs.utils.other.PathUtils;
-import exp.libs.utils.other.StrUtils;
-import exp.libs.warp.tpl.Template;
+import exp.libs.utils.str.StrUtils;
 
 /**
  * <PRE>
@@ -56,29 +56,29 @@ public class ScriptBuilder {
 	}
 	
 	private static boolean buildThreadName() {
-		Template tpl = new Template(TplNames.THREADNAME_TEMPLATE, Charset.ISO);
+		FileTemplate tpl = new FileTemplate(TplNames.THREADNAME_TEMPLATE, Charset.ISO);
 		tpl.set(Placeholders.PROJECT_NAME, Config.getInstn().getPrjName());
 		tpl.set(Placeholders.THREAD_SUFFIX, Config.getInstn().getThreadSuffix());
 		return createScript(ScriptNames.THREAD_NAME, 
-				StandardUtils.dos2unix(tpl.getContent()));
+				OSUtils.dos2unix(tpl.getContent()));
 	}
 	
 	private static boolean buildUnixPid() {
-		Template tpl = new Template(TplNames.PID_TEMPLATE_UNIX, Charset.ISO);
+		FileTemplate tpl = new FileTemplate(TplNames.PID_TEMPLATE_UNIX, Charset.ISO);
 		tpl.set(Placeholders.PROJECT_NAME, Config.getInstn().getPrjName());
 		return createScript(ScriptNames.ECHO_PID, 
-				StandardUtils.dos2unix(tpl.getContent()));
+				OSUtils.dos2unix(tpl.getContent()));
 	}
 	
 	private static boolean buildUnixStart() {
-		Template tpl = new Template(TplNames.START_TEMPLATE_UNIX, Charset.ISO);
+		FileTemplate tpl = new FileTemplate(TplNames.START_TEMPLATE_UNIX, Charset.ISO);
 		tpl.set(Placeholders.PROJECT_NAME, Config.getInstn().getPrjName());
 				
 		// 声明变量（-cp路径前缀）
 		String exports = "";
 		List<String> prefixs = JarMgr.getInstn().getJarPathPrefixs();
 		for(int idx = 0; idx < prefixs.size(); idx++) {
-			exports = StrUtils.concat(exports, 
+			exports = StrUtils.concat(exports,
 					"export lib", idx, "=", prefixs.get(idx), Delimiter.LF);
 		}
 		tpl.set(Placeholders.VARIABLE_DECLARATION, exports);
@@ -118,18 +118,18 @@ public class ScriptBuilder {
 		tpl.set(Placeholders.RUN_IN_BACKGROUND, "&");
 		
 		return createScript(ScriptNames.START_SH, 
-				StandardUtils.dos2unix(tpl.getContent()));
+				OSUtils.dos2unix(tpl.getContent()));
 	}
 	
 	private static boolean buildUnixStop() {
-		Template tpl = new Template(TplNames.STOP_TEMPLATE_DOS, Charset.ISO);
+		FileTemplate tpl = new FileTemplate(TplNames.STOP_TEMPLATE_DOS, Charset.ISO);
 		tpl.set(Placeholders.PROJECT_NAME, Config.getInstn().getPrjName());
 		return createScript(ScriptNames.STOP_SH, 
-				StandardUtils.dos2unix(tpl.getContent()));
+				OSUtils.dos2unix(tpl.getContent()));
 	}
 	
 	private static boolean buildUnixVersion() {
-		Template tpl = new Template(TplNames.START_TEMPLATE_UNIX, Charset.ISO);
+		FileTemplate tpl = new FileTemplate(TplNames.START_TEMPLATE_UNIX, Charset.ISO);
 		tpl.set(Placeholders.PROJECT_NAME, Config.getInstn().getPrjName());
 				
 		// 声明变量（-cp路径前缀）
@@ -177,11 +177,11 @@ public class ScriptBuilder {
 		tpl.set(Placeholders.RUN_IN_BACKGROUND, "");
 		
 		return createScript(ScriptNames.VERSION_SH, 
-				StandardUtils.dos2unix(tpl.getContent()));
+				OSUtils.dos2unix(tpl.getContent()));
 	}
 	
 	private static boolean buildDosStart() {
-		Template tpl = new Template(TplNames.START_TEMPLATE_DOS, Charset.ISO);
+		FileTemplate tpl = new FileTemplate(TplNames.START_TEMPLATE_DOS, Charset.ISO);
 		tpl.set(Placeholders.PROJECT_NAME, Config.getInstn().getPrjName());
 		
 		// 声明变量（-cp路径前缀）
@@ -227,12 +227,12 @@ public class ScriptBuilder {
 		
 		// 标准化脚本内容, 并修正脚本中的set命令
 		String scriptContent = _repairSetCmd(
-				StandardUtils.unix2dos(tpl.getContent()));
+				OSUtils.unix2dos(tpl.getContent()));
 		return createScript(ScriptNames.START_BAT, scriptContent);
 	}
 	
 	private static boolean buildDosVersion() {
-		Template tpl = new Template(TplNames.START_TEMPLATE_DOS, Charset.ISO);
+		FileTemplate tpl = new FileTemplate(TplNames.START_TEMPLATE_DOS, Charset.ISO);
 		tpl.set(Placeholders.PROJECT_NAME, Config.getInstn().getPrjName());
 		
 		// 声明变量（-cp路径前缀）
@@ -279,14 +279,14 @@ public class ScriptBuilder {
 		
 		// 标准化脚本内容, 并修正脚本中的set命令
 		String scriptContent = _repairSetCmd(
-				StandardUtils.unix2dos(tpl.getContent()));
+				OSUtils.unix2dos(tpl.getContent()));
 		return createScript(ScriptNames.VERSION_BAT, scriptContent);
 	}
 	
 	/**
 	 * <PRE>
 	 * 修正dos脚本用于读取线程文件的 "set /p" 命令.
-	 * 该命令由于 {@link StandardUtils.unix2dos} 中的路径标准化, 
+	 * 该命令由于  OSUtils.unix2dos 中的路径标准化,
 	 * 使得反斜杠 / 变成 \\ 导致失效, 需要修正.
 	 * </PRE>
 	 * @param dosScriptContent

@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import exp.libs.utils.file.FileUtils;
+import exp.libs.utils.str.StrUtils;
 import org.apache.maven.project.MavenProject;
 
 import exp.libs.mrp.Config;
@@ -12,9 +14,7 @@ import exp.libs.mrp.Log;
 import exp.libs.mrp.envm.CmpPathMode;
 import exp.libs.mrp.envm.DependType;
 import exp.libs.mrp.utils.MvnUtils;
-import exp.libs.utils.io.FileUtils;
 import exp.libs.utils.other.PathUtils;
-import exp.libs.utils.other.StrUtils;
 import exp.libs.utils.verify.RegexUtils;
 
 /**
@@ -96,7 +96,7 @@ public class JarMgr {
 	private void _loadPrjJarPath() {
 		String srcDir = Config.getInstn().isProguard() ? 
 				Config.getInstn().getProguardDir() : Config.TARGET_DIR;
-		String srcName = StrUtils.concat(Config.getInstn().getPrjName(), "-", 
+		String srcName = StrUtils.concat(Config.getInstn().getPrjName(), "-",
 				Config.getInstn().getPrjVer(), ".jar");
 		String srcPath = PathUtils.combine(srcDir, srcName);
 		

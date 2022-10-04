@@ -4,13 +4,13 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+import exp.libs.utils.str.StrUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.project.MavenProject;
 
 import exp.libs.mrp.Config;
 import exp.libs.utils.other.PathUtils;
-import exp.libs.utils.other.StrUtils;
 
 /**
  * <PRE>
@@ -51,7 +51,7 @@ public class MvnUtils {
 	 * @return jar包相对于maven仓库的相对路径
 	 */
 	private static String getRelativePath(Artifact artifact) {
-		return StrUtils.concat(getRelativeDir(artifact), 
+		return StrUtils.concat(getRelativeDir(artifact),
 				File.separatorChar, getJarName(artifact));
 	}
 	

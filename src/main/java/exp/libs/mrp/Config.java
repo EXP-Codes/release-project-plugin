@@ -3,10 +3,10 @@ package exp.libs.mrp;
 import exp.libs.mrp.api.MvnInstallMojo;
 import exp.libs.mrp.envm.CmpPathMode;
 import exp.libs.mrp.envm.DependType;
-import exp.libs.utils.io.FileUtils;
+import exp.libs.utils.file.FileUtils;
 import exp.libs.utils.other.BoolUtils;
 import exp.libs.utils.other.PathUtils;
-import exp.libs.utils.other.StrUtils;
+import exp.libs.utils.str.StrUtils;
 
 /**
  * <PRE>

@@ -1,5 +1,6 @@
 package exp.libs.mrp.api;
 
+import exp.libs.utils.file.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
@@ -8,7 +9,6 @@ import exp.libs.mrp.Config;
 import exp.libs.mrp.Log;
 import exp.libs.mrp.cache.JarMgr;
 import exp.libs.mrp.services.ScriptBuilder;
-import exp.libs.utils.io.FileUtils;
 
 /**
  * <PRE>
