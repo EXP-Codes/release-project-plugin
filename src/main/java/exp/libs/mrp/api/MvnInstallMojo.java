@@ -1,6 +1,7 @@
 package exp.libs.mrp.api;
 
 import exp.libs.utils.file.FileUtils;
+import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
@@ -12,26 +13,26 @@ import exp.libs.mrp.services.ScriptBuilder;
 
 /**
  * <PRE>
- * 项目发布插件:Maven调用入口 - install功能部分。
+ * 项目发布插件:Maven 调用入口 - install 功能部分。
  * 
- * 说明：根据脚本类型，自动生成J2SE项目的启动、停止、启动检查等脚本。
+ * 说明：根据脚本类型，自动生成 J2SE 项目的启动、停止、启动检查等脚本。
  * 
- * 		该插件在install生命周期后运行execute phase
- * 		运行插件前需要进行jar依赖分析requiresDependencyResolution
+ * 		该插件在 install 生命周期后运行 execute phase
+ * 		运行插件前需要进行 jar 依赖分析 requiresDependencyResolution
  * 
  * </PRE>
  * 
  * <br/><B>PROJECT : </B> mojo-release-plugin
  * <br/><B>SUPPORT : </B> <a href="http://www.exp-blog.com" target="_blank">www.exp-blog.com</a> 
- * @version   2017-08-17
+ * @version   2022-10-04
  * @author    EXP: 272629724@qq.com
- * @since     jdk版本：jdk1.6
+ * @since     jdk版本：jdk1.8
  * 
  * @goal install
  * @requiresDependencyResolution runtime
  * @execute phase= "install"
  */
-public class MvnInstallMojo extends org.apache.maven.plugin.AbstractMojo {
+public class MvnInstallMojo extends AbstractMojo {
 
 	/**
 	 * Maven所发布的项目对象
