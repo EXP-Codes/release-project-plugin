@@ -31,7 +31,7 @@
 
 ```xml
 <plugin>
-    <groupId>exp.libs</groupId>
+    <groupId>com.exp-blog</groupId>
     <artifactId>mojo-release-plugin</artifactId>
     <version>${mrp.version}</version>	<!-- 根据实际情况设置版本号 -->
     <executions>
