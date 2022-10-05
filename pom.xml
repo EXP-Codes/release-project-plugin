@@ -35,11 +35,10 @@
     <packaging>maven-plugin</packaging>
     
     <properties>
-        <jdk.version>1.8</jdk.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <exp.libs.version>2.2.0-SNAPSHOT</exp.libs.version>
+        <mvn.version>3.8.6</mvn.version>
         <ut.version>5.9.1</ut.version>
     </properties>
 
@@ -64,30 +63,30 @@
         </dependency>
 
         <!-- Maven构件 -->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.maven</groupId>-->
-<!--            <artifactId>maven-settings</artifactId>-->
-<!--            <version>${mvn.version}</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.maven</groupId>-->
-<!--            <artifactId>maven-artifact</artifactId>-->
-<!--            <version>${mvn.version}</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.maven</groupId>-->
-<!--            <artifactId>maven-model</artifactId>-->
-<!--            <version>${mvn.version}</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
-            <version>3.8.6</version>
+            <version>${mvn.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-core</artifactId>
-            <version>3.8.6</version>
+            <version>${mvn.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-settings</artifactId>
+            <version>${mvn.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-artifact</artifactId>
+            <version>${mvn.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-model</artifactId>
+            <version>${mvn.version}</version>
         </dependency>
 
         <dependency>
@@ -97,16 +96,16 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
-            <version>3.4.2</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.11.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.codehaus.plexus</groupId>-->
+<!--            <artifactId>plexus-utils</artifactId>-->
+<!--            <version>3.4.2</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>commons-io</groupId>-->
+<!--            <artifactId>commons-io</artifactId>-->
+<!--            <version>2.11.0</version>-->
+<!--        </dependency>-->
 
 
         <!-- 单元测试 -->
@@ -139,8 +138,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.0</version>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
