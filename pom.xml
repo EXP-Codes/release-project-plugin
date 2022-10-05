@@ -50,16 +50,19 @@
             <groupId>com.exp-blog</groupId>
             <artifactId>exp-libs-base</artifactId>
             <version>${exp.libs.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.exp-blog</groupId>
             <artifactId>exp-libs-log</artifactId>
             <version>${exp.libs.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.exp-blog</groupId>
             <artifactId>exp-libs-version</artifactId>
             <version>${exp.libs.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Maven 构件 -->
@@ -67,33 +70,38 @@
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
             <version>${mvn.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-core</artifactId>
             <version>${mvn.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-settings</artifactId>
             <version>${mvn.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-artifact</artifactId>
             <version>${mvn.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-model</artifactId>
             <version>${mvn.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>    <!-- 包含了 Maven 相关的注解，可以取代旧版插件工程中在注释的 Tag 标签 -->
             <groupId>org.apache.maven.plugin-tools</groupId>
             <artifactId>maven-plugin-annotations</artifactId>
             <version>3.6.4</version>
+            <scope>provided</scope>
         </dependency>
-
 
         <!-- 单元测试 -->
         <dependency>
@@ -108,7 +116,6 @@
             <version>${ut.version}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -132,7 +139,22 @@
                 </configuration>
             </plugin>
 
-            <!-- 生成 javadoc -->
+            <!-- 生成源码 jar 包 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 生成 javadoc 包 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -157,72 +179,15 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- 生成源码 jar 包 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- GPG 签名 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- 分发管理和认证：用于部署和发布到中央仓库 https://mvnrepository.com/ -->
-            <!-- 此插件对于发布 SNAPSHOT 版本时不会触发 -->
-            <!-- 其作用是自动在 https://s01.oss.sonatype.org/ 的 Staging Repositories 中 close 并 release，无需手动干预 -->
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.13</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>sonatype</serverId>   <!-- 要与 distributionManagement 定义的 id 一致 -->
-                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>sonatype</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>sonatype</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
-    <!-- =========================================================================== -->
-    <!-- 不能修改，整个 profile 都是用于 Github Actions 命令行发布的 （主要是 GPG 签名插件需要配置非交互模式输入密码） -->
-    <!-- 命令行使用 mvn clean deploy -P toSonatype 即可指定此配置 -->
     <profiles>
+        <!-- =========================================================================== -->
+        <!-- 用于 install 时交互式输入 GPG 签名 -->
+        <!-- linux 环境需终端支持交互，若报错可设置环境变量 export GPG_TTY=$(tty) ，重新执行 mvn install -P ttyForInstall 即可 -->
         <profile>
-            <id>toSonatype</id>
+            <id>ttyForInstall</id>
             <build>
                 <plugins>
                     <!-- 编译 maven 工程 -->
@@ -237,7 +202,22 @@
                         </configuration>
                     </plugin>
 
-                    <!-- 生成 javadoc -->
+                    <!-- 生成源码 jar 包 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- 生成 javadoc 包 -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
@@ -247,8 +227,8 @@
                             <encoding>${project.build.sourceEncoding}</encoding>
                             <docencoding>${project.build.sourceEncoding}</docencoding>
 
-                            <!-- 从JDK8开始, Javadoc中添加了doclint, 目的是旨在获得符合W3C HTML 4.01标准规范的HTML文档 -->
-                            <!-- 简而言之Javadoc不允许出现html相关的元素, 若旧注释含有这些元素又不想修改, 只能关闭doclint -->
+                            <!-- 从 JDK8 开始, Javadoc中 添加了 doclint, 目的是旨在获得符合 W3C HTML 4.01 标准规范的 HTML 文档 -->
+                            <!-- 简而言之 Javadoc 不允许出现 html 相关的元素, 若旧注释含有这些元素又不想修改, 只能关闭 doclint -->
                             <additionalOptions>
                                 <additionalOption>-Xdoclint:none</additionalOption>
                             </additionalOptions>
@@ -263,6 +243,45 @@
                         </executions>
                     </plugin>
 
+                    <!-- GPG 签名 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <!-- 默认签名时通过交互方式输入 gpg 密码（若 linux 需终端支持） -->
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- =========================================================================== -->
+        <!-- 用于 deploy 时交互式输入 GPG 签名 -->
+        <!-- linux 环境需终端支持交互，若报错可设置环境变量 export GPG_TTY=$(tty) ，重新执行 mvn deploy -P ttyForDeploy 即可 -->
+        <profile>
+            <id>ttyForDeploy</id>
+            <build>
+                <plugins>
+                    <!-- 编译 maven 工程 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.10.0</version>
+                        <configuration>
+                            <source>${maven.compiler.source}</source>
+                            <target>${maven.compiler.target}</target>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                        </configuration>
+                    </plugin>
+
                     <!-- 生成源码 jar 包 -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -271,6 +290,127 @@
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- 生成 javadoc 包 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.3.2</version>
+                        <configuration>
+                            <charset>${project.build.sourceEncoding}</charset>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                            <docencoding>${project.build.sourceEncoding}</docencoding>
+
+                            <!-- 从 JDK8 开始, Javadoc中 添加了 doclint, 目的是旨在获得符合 W3C HTML 4.01 标准规范的 HTML 文档 -->
+                            <!-- 简而言之 Javadoc 不允许出现 html 相关的元素, 若旧注释含有这些元素又不想修改, 只能关闭 doclint -->
+                            <additionalOptions>
+                                <additionalOption>-Xdoclint:none</additionalOption>
+                            </additionalOptions>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- GPG 签名 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <!-- 默认签名时通过交互方式输入 gpg 密码（若 linux 需终端支持） -->
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- 分发管理和认证：用于部署和发布到中央仓库 https://mvnrepository.com/ -->
+                    <!-- 此插件对于发布 SNAPSHOT 版本时不会触发 -->
+                    <!-- 其作用是自动在 https://s01.oss.sonatype.org/ 的 Staging Repositories 中 close 并 release，无需手动干预 -->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.13</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>sonatype</serverId>   <!-- 要与 distributionManagement 定义的 id 一致 -->
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- =========================================================================== -->
+        <!-- 不能修改，这个 profile 是用于 Github Actions 命令行发布的 （主要是 GPG 签名插件需要配置非交互模式输入密码） -->
+        <!-- 命令行使用 mvn clean deploy -P autoDeploy 即可指定此配置 -->
+        <profile>
+            <id>autoDeploy</id>
+            <build>
+                <plugins>
+                    <!-- 编译 maven 工程 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.10.0</version>
+                        <configuration>
+                            <source>${maven.compiler.source}</source>
+                            <target>${maven.compiler.target}</target>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                        </configuration>
+                    </plugin>
+
+                    <!-- 生成源码 jar 包 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- 生成 javadoc 包 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.3.2</version>
+                        <configuration>
+                            <charset>${project.build.sourceEncoding}</charset>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                            <docencoding>${project.build.sourceEncoding}</docencoding>
+
+                            <!-- 从 JDK8 开始, Javadoc中 添加了 doclint, 目的是旨在获得符合 W3C HTML 4.01 标准规范的 HTML 文档 -->
+                            <!-- 简而言之 Javadoc 不允许出现 html 相关的元素, 若旧注释含有这些元素又不想修改, 只能关闭 doclint -->
+                            <additionalOptions>
+                                <additionalOption>-Xdoclint:none</additionalOption>
+                            </additionalOptions>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
                                 <goals>
                                     <goal>jar</goal>
                                 </goals>
@@ -319,5 +459,21 @@
             </build>
         </profile>
     </profiles>
+
+    <!-- deploy 的目标服务器 -->
+    <distributionManagement>
+
+        <!-- sonatype 的快照仓库 -->
+        <snapshotRepository>
+            <id>sonatype</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+
+        <!-- sonatype 的正式仓库 -->
+        <repository>
+            <id>sonatype</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
 </project>

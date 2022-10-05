@@ -117,7 +117,7 @@ public class JarMgr {
 					Config.getInstn().getCopyJarDir(), jarNames.get(srcPath));
 			FileUtils.copyFile(srcPath, snkPath);
 			
-			Log.debug("拷贝: [".concat(srcPath).concat("] => [").
+			Log.info("拷贝: [".concat(srcPath).concat("] => [").
 					concat(snkPath).concat("]"));
 			
 			if(DependType.SELF != Config.getInstn().getDependType()) {

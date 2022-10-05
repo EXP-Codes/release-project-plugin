@@ -38,7 +38,7 @@ public class ScriptBuilder {
 		if(isOk == true) {
 			Log.info("创建脚本成功: ".concat(name));
 		} else {
-			Log.warn("创建脚本失败: ".concat(name));
+			Log.error("创建脚本失败: ".concat(name));
 		}
 		return isOk;
 	}
