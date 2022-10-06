@@ -24,7 +24,7 @@
 
     <!-- 发布到 sonatype 中央仓库要求必须有这 3 个属性 -->
     <name>release-project-plugin</name>
-    <description>（非 Spring 纯后端） Maven 项目一键发布插件</description>
+    <description>（非 Spring）Maven 项目一键发布插件</description>
     <url>https://github.com/lyy289065406/exp-libs-refactor</url>
 
     <groupId>com.exp-blog</groupId>

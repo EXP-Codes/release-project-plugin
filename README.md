@@ -1,5 +1,5 @@
 # release-project-plugin
-> Maven 项目一键发布插件
+> （非 Spring）Maven 项目一键发布插件
 
 ------
 
