@@ -57,7 +57,7 @@ public class ScriptNames {
 	/**
 	 * 线程名声明脚本
 	 */
-	public final static String THREAD_NAME = "_threadname";
+	public final static String THREAD_NAME = ".threadname";
 	
 	/**
 	 * 线程号查询脚本:unix

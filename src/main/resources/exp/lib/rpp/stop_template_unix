@@ -6,7 +6,7 @@ if [ $app_path ];then
     cd $app_path
 fi
 
-export threadname=$(cat ./_threadname)
+export threadname=$(cat ./.threadname)
 PID=`ps -ef|grep Dtn=${threadname}|grep -v grep|awk '{print $2}'`
 if [ $PID ];then
     kill $PID

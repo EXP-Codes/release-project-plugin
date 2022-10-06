@@ -1,7 +1,7 @@
 #!/bin/bash
 # @{project_name}@
 
-export threadname=$(cat ./_threadname)
+export threadname=$(cat ./.threadname)
 @{variable_declaration}@
 PID=`ps -ef|grep Dtn=@{ver}@${threadname}|grep -v grep|awk '{print $2}'`
 if [ -z $PID ];then
