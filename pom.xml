@@ -18,14 +18,14 @@
 
     <scm>
         <connection>scm:git:https://github.com/lyy289065406/release-project-plugin.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:lyy289065406/exp-libs-refactor.git</developerConnection>
+        <developerConnection>scm:git:ssh://git@github.com:lyy289065406/release-project-plugin.git</developerConnection>
         <url>https://github.com/lyy289065406/release-project-plugin</url>
     </scm>
 
     <!-- 发布到 sonatype 中央仓库要求必须有这 3 个属性 -->
     <name>release-project-plugin</name>
     <description>（非 Spring）Maven 项目一键发布插件</description>
-    <url>https://github.com/lyy289065406/exp-libs-refactor</url>
+    <url>https://github.com/lyy289065406/release-project-plugin</url>
 
     <groupId>com.exp-blog</groupId>
     <artifactId>release-project-plugin</artifactId>
