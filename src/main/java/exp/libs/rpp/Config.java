@@ -1,8 +1,8 @@
-package exp.libs.mrp;
+package exp.libs.rpp;
 
-import exp.libs.mrp.api.MvnInstallMojo;
-import exp.libs.mrp.envm.CmpPathMode;
-import exp.libs.mrp.envm.DependMode;
+import exp.libs.rpp.api.MvnInstallMojo;
+import exp.libs.rpp.envm.CmpPathMode;
+import exp.libs.rpp.envm.DependMode;
 import exp.libs.utils.file.FileUtils;
 import exp.libs.utils.other.BoolUtils;
 import exp.libs.utils.other.PathUtils;

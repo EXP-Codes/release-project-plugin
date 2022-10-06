@@ -1,4 +1,4 @@
-package exp.libs.mrp;
+package exp.libs.rpp;
 
 import exp.libs.log.Console;
 
@@ -15,15 +15,15 @@ import exp.libs.log.Console;
 public class Log {
 
 	public static void info(String msg) {
-		Console.out("[MRP] {}", msg);
+		Console.out("[RPP] {}", msg);
 	}
 	
 	public static void error(String msg) {
-		Console.err("[MRP] {}", msg);
+		Console.err("[RPP] {}", msg);
 	}
 	
 	public static void error(String msg, Throwable e) {
-		Console.err("[MRP] {}", msg, e);
+		Console.err("[RPP] {}", msg, e);
 	}
 	
 }

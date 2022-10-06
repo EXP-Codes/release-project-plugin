@@ -1,15 +1,15 @@
-package exp.libs.mrp.services;
+package exp.libs.rpp.services;
 
 import java.util.List;
 
 import exp.libs.envm.Charset;
 import exp.libs.envm.Delimiter;
-import exp.libs.mrp.Config;
-import exp.libs.mrp.Log;
-import exp.libs.mrp.cache.JarMgr;
-import exp.libs.mrp.envm.Placeholders;
-import exp.libs.mrp.envm.ScriptNames;
-import exp.libs.mrp.envm.TplNames;
+import exp.libs.rpp.Config;
+import exp.libs.rpp.Log;
+import exp.libs.rpp.cache.JarMgr;
+import exp.libs.rpp.envm.Placeholders;
+import exp.libs.rpp.envm.ScriptNames;
+import exp.libs.rpp.envm.TplNames;
 import exp.libs.utils.file.FileTemplate;
 import exp.libs.utils.file.FileUtils;
 import exp.libs.utils.os.OSUtils;

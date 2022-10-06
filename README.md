@@ -32,10 +32,10 @@
 <plugin>
     <groupId>com.exp-blog</groupId>
     <artifactId>release-project-plugin</artifactId>
-    <version>${mrp.version}</version>	<!-- 根据实际情况设置版本号 -->
+    <version>${rpp.version}</version>	<!-- 根据实际情况设置版本号 -->
     <executions>
         <execution>
-            <id>mrp</id>
+            <id>rpp</id>
             <phase>install</phase>
             <goals>
                 <goal>install</goal>

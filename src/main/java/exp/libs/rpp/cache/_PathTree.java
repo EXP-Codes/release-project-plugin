@@ -1,4 +1,4 @@
-package exp.libs.mrp.cache;
+package exp.libs.rpp.cache;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import exp.libs.mrp.envm.CmpPathMode;
+import exp.libs.rpp.envm.CmpPathMode;
 import exp.libs.utils.other.PathUtils;
 
 /**

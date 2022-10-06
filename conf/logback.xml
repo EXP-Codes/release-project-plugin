@@ -79,7 +79,7 @@
 	</appender>
 	
 	<!-- 主程序日志 -->
-	<logger name="exp.libs.mrp" level="info" additivity="true">
+	<logger name="exp.libs.rpp" level="info" additivity="true">
 		<appender-ref ref="app" />
 	</logger>
 	

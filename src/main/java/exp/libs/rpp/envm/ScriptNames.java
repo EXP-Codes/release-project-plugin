@@ -1,4 +1,4 @@
-package exp.libs.mrp.envm;
+package exp.libs.rpp.envm;
 
 /**
  * <PRE>

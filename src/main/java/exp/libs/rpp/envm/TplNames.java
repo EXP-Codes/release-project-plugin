@@ -1,4 +1,4 @@
-package exp.libs.mrp.envm;
+package exp.libs.rpp.envm;
 
 /**
  * <PRE>
@@ -14,7 +14,7 @@ package exp.libs.mrp.envm;
  */
 public class TplNames {
 
-	private final static String PACKAGE = "/exp/lib/mrp/";
+	private final static String PACKAGE = "/exp/lib/rpp/";
 	
 	/**
 	 * ant启动脚本模板名称

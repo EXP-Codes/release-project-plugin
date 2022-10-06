@@ -1,4 +1,4 @@
-package exp.libs.mrp;
+package exp.libs.rpp;
 
 import exp.libs.log.LogUtils;
 import exp.libs.version.VersionMgr;

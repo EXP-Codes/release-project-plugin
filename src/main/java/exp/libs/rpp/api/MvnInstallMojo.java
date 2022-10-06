@@ -1,4 +1,4 @@
-package exp.libs.mrp.api;
+package exp.libs.rpp.api;
 
 import exp.libs.utils.file.FileUtils;
 import org.apache.maven.plugin.AbstractMojo;
@@ -7,10 +7,10 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.project.MavenProject;
 
-import exp.libs.mrp.Config;
-import exp.libs.mrp.Log;
-import exp.libs.mrp.cache.JarMgr;
-import exp.libs.mrp.services.ScriptBuilder;
+import exp.libs.rpp.Config;
+import exp.libs.rpp.Log;
+import exp.libs.rpp.cache.JarMgr;
+import exp.libs.rpp.services.ScriptBuilder;
 
 /**
  * <PRE>

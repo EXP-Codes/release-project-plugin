@@ -1,4 +1,4 @@
-package exp.libs.mrp.cache;
+package exp.libs.rpp.cache;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -9,11 +9,11 @@ import exp.libs.utils.file.FileUtils;
 import exp.libs.utils.str.StrUtils;
 import org.apache.maven.project.MavenProject;
 
-import exp.libs.mrp.Config;
-import exp.libs.mrp.Log;
-import exp.libs.mrp.envm.CmpPathMode;
-import exp.libs.mrp.envm.DependMode;
-import exp.libs.mrp.utils.MvnUtils;
+import exp.libs.rpp.Config;
+import exp.libs.rpp.Log;
+import exp.libs.rpp.envm.CmpPathMode;
+import exp.libs.rpp.envm.DependMode;
+import exp.libs.rpp.utils.MvnUtils;
 import exp.libs.utils.other.PathUtils;
 import exp.libs.utils.verify.RegexUtils;
 

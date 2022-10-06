@@ -1,4 +1,4 @@
-package exp.libs.mrp.utils;
+package exp.libs.rpp.utils;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -9,7 +9,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.project.MavenProject;
 
-import exp.libs.mrp.Config;
+import exp.libs.rpp.Config;
 import exp.libs.utils.other.PathUtils;
 
 /**
