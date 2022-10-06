@@ -37,7 +37,7 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <exp.libs.version>2.2.0-SNAPSHOT</exp.libs.version>
+        <exp.libs.version>2.1.0</exp.libs.version>
         <mvn.version>3.8.6</mvn.version>
         <ut.version>5.9.1</ut.version>
     </properties>
