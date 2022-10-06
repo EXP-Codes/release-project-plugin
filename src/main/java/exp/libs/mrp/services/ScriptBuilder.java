@@ -20,7 +20,7 @@ import exp.libs.utils.str.StrUtils;
  * <PRE>
  * 脚本构造器
  * </PRE>
- * <br/><B>PROJECT : </B> mojo-release-plugin
+ * <br/><B>PROJECT : </B> release-project-plugin
  * <br/><B>SUPPORT : </B> <a href="http://www.exp-blog.com" target="_blank">www.exp-blog.com</a> 
  * @version   2018-05-15
  * @author    EXP: 272629724@qq.com
@@ -89,7 +89,7 @@ public class ScriptBuilder {
 		// 设置JDK参数
 		String jdkParams = StrUtils.concat("-Xms", Config.getInstn().getXms(), 
 				" -Xmx", Config.getInstn().getXmx(), " ", 
-				Config.getInstn().getJdkParams());
+				Config.getInstn().getJdkArgs());
 		tpl.set(Placeholders.JDK_PARAMS, jdkParams);
 		
 		// 设置-cp路径
@@ -148,7 +148,7 @@ public class ScriptBuilder {
 		// 设置JDK参数
 		String jdkParams = StrUtils.concat("-Xms", Config.getInstn().getXms(), 
 				" -Xmx", Config.getInstn().getXmx(), " ", 
-				Config.getInstn().getJdkParams());
+				Config.getInstn().getJdkArgs());
 		tpl.set(Placeholders.JDK_PARAMS, jdkParams);
 		
 		// 设置-cp路径
@@ -167,7 +167,7 @@ public class ScriptBuilder {
 		tpl.set(Placeholders.CLASSPATH, cps);
 		
 		// 设置main方法与入参
-		tpl.set(Placeholders.MAIN_METHOD, Config.getInstn().getVerClass());
+		tpl.set(Placeholders.MAIN_METHOD, Config.getInstn().getVersionClass());
 		tpl.set(Placeholders.MAIN_METHOD_PARAMS, "-p");	// 只打印版本
 		tpl.set(Placeholders.VER, "ver-");	// 声明为版本脚本
 		
@@ -199,7 +199,7 @@ public class ScriptBuilder {
 		// 设置JDK参数
 		String jdkParams = StrUtils.concat("-Xms", Config.getInstn().getXms(), 
 				" -Xmx", Config.getInstn().getXmx(), " ", 
-				Config.getInstn().getJdkParams());
+				Config.getInstn().getJdkArgs());
 		tpl.set(Placeholders.JDK_PARAMS, jdkParams);
 		
 		// 设置-cp路径
@@ -244,14 +244,14 @@ public class ScriptBuilder {
 		}
 		tpl.set(Placeholders.VARIABLE_DECLARATION, sets);
 				
-		// 设置JDK命令（版本脚本不使用图形界面）
+		// 设置 JDK 命令（版本脚本不使用图形界面）
 		tpl.set(Placeholders.JDK_PATH, 
 				Config.getInstn().getJdkPath().replace("javaw", "java"));
 		
 		// 设置JDK参数
 		String jdkParams = StrUtils.concat("-Xms", Config.getInstn().getXms(), 
 				" -Xmx", Config.getInstn().getXmx(), " ", 
-				Config.getInstn().getJdkParams());
+				Config.getInstn().getJdkArgs());
 		tpl.set(Placeholders.JDK_PARAMS, jdkParams);
 		
 		// 设置-cp路径
@@ -270,7 +270,7 @@ public class ScriptBuilder {
 		tpl.set(Placeholders.CLASSPATH, cps);
 				
 		// 设置main方法与入参
-		tpl.set(Placeholders.MAIN_METHOD, Config.getInstn().getVerClass());
+		tpl.set(Placeholders.MAIN_METHOD, Config.getInstn().getVersionClass());
 		tpl.set(Placeholders.MAIN_METHOD_PARAMS, "-p");	// 只打印版本
 		
 		// 设置标准流和异常流输出位置

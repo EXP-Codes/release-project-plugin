@@ -4,7 +4,7 @@ package exp.libs.mrp.envm;
  * <PRE>
  * 枚举类:压缩路径前缀模式
  * </PRE>
- * <br/><B>PROJECT : </B> mojo-release-plugin
+ * <br/><B>PROJECT : </B> release-project-plugin
  * <br/><B>SUPPORT : </B> <a href="http://www.exp-blog.com" target="_blank">www.exp-blog.com</a> 
  * @version   2018-05-15
  * @author    EXP: 272629724@qq.com

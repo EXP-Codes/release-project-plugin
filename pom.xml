@@ -17,18 +17,18 @@
     </developers>
 
     <scm>
-        <connection>scm:git:https://github.com/lyy289065406/mojo-release-plugin.git</connection>
+        <connection>scm:git:https://github.com/lyy289065406/release-project-plugin.git</connection>
         <developerConnection>scm:git:ssh://git@github.com:lyy289065406/exp-libs-refactor.git</developerConnection>
-        <url>https://github.com/lyy289065406/mojo-release-plugin</url>
+        <url>https://github.com/lyy289065406/release-project-plugin</url>
     </scm>
 
     <!-- 发布到 sonatype 中央仓库要求必须有这 3 个属性 -->
-    <name>mojo-release-plugin</name>
+    <name>release-project-plugin</name>
     <description>（非 Spring 纯后端） Maven 项目一键发布插件</description>
     <url>https://github.com/lyy289065406/exp-libs-refactor</url>
 
     <groupId>com.exp-blog</groupId>
-    <artifactId>mojo-release-plugin</artifactId>
+    <artifactId>release-project-plugin</artifactId>
     <version>2.0.0-SNAPSHOT</version>
 
     <!-- 打包为 maven 插件 -->
@@ -50,19 +50,16 @@
             <groupId>com.exp-blog</groupId>
             <artifactId>exp-libs-base</artifactId>
             <version>${exp.libs.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.exp-blog</groupId>
             <artifactId>exp-libs-log</artifactId>
             <version>${exp.libs.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.exp-blog</groupId>
             <artifactId>exp-libs-version</artifactId>
             <version>${exp.libs.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- Maven 构件 -->

@@ -2,7 +2,7 @@ package exp.libs.mrp;
 
 import exp.libs.mrp.api.MvnInstallMojo;
 import exp.libs.mrp.envm.CmpPathMode;
-import exp.libs.mrp.envm.DependType;
+import exp.libs.mrp.envm.DependMode;
 import exp.libs.utils.file.FileUtils;
 import exp.libs.utils.other.BoolUtils;
 import exp.libs.utils.other.PathUtils;
@@ -12,7 +12,7 @@ import exp.libs.utils.str.StrUtils;
  * <PRE>
  * 配置类.
  * </PRE>
- * <br/><B>PROJECT : </B> mojo-release-plugin
+ * <br/><B>PROJECT : </B> release-project-plugin
  * <br/><B>SUPPORT : </B> <a href="http://www.exp-blog.com" target="_blank">www.exp-blog.com</a> 
  * @version   2018-05-15
  * @author    EXP: 272629724@qq.com
@@ -26,7 +26,7 @@ public class Config {
 	
 	private final static String DEFAULT_JAR_LIB = "./lib";
 	
-	private DependType dependType;
+	private DependMode dependMode;
 	
 	private String jarLibDir;
 	
@@ -46,7 +46,7 @@ public class Config {
 	
 	private String releaseDir;
 	
-	private String verClass;
+	private String versionClass;
 	
 	private String mainClass;
 	
@@ -60,7 +60,7 @@ public class Config {
 	
 	private String xmx;
 	
-	private String jdkParams;
+	private String jdkArgs;
 	
 	private String threadSuffix;
 	
@@ -78,7 +78,7 @@ public class Config {
 	
 	public static Config createInstn(MvnInstallMojo mvn) {
 		if(mvn == null) {
-			Log.error("初始化 mojo-release-plugin 失败");
+			Log.error("初始化 release-project-plugin 失败");
 			System.exit(1);
 		}
 		
@@ -101,7 +101,7 @@ public class Config {
 		if(instance == null) {
 			synchronized (Config.class) {
 				if(instance == null) {
-					Log.error("mojo-release-plugin 尚未初始化");
+					Log.error("release-project-plugin 尚未初始化");
 					System.exit(1);
 				}
 			}
@@ -111,33 +111,33 @@ public class Config {
 	
 	private void init(MvnInstallMojo mvn) {
 		try {
-			this.dependType = DependType.toType(mvn.getDependType().trim());
-			this.jarLibDir = mvn.getJarLibDir().trim();
+			this.dependMode = DependMode.toMode(StrUtils.trim(mvn.getDependMode()));
+			this.jarLibDir = StrUtils.trim(mvn.getJarLibDir());
 			if(PathUtils.isFullPath(jarLibDir)) { jarLibDir = DEFAULT_JAR_LIB; }
-			this.mavenRepository = mvn.getMavenRepository().trim();
-			this.prjName = mvn.getProject().getArtifactId();
-			this.prjVer = mvn.getProject().getVersion();
-			this.noPrjVer = BoolUtils.toBool(mvn.getNoPrjVer().trim(), true);
-			this.noVerJarRegex = mvn.getNoVerJarRegex().trim();
+			this.mavenRepository = StrUtils.trim(mvn.getMavenRepository());
+			this.prjName = StrUtils.trim(mvn.getProject().getArtifactId());
+			this.prjVer = StrUtils.trim(mvn.getProject().getVersion());
+			this.noPrjVer = BoolUtils.toBool(StrUtils.trim(mvn.getNoPrjVer()), true);
+			this.noVerJarRegex = StrUtils.trim(mvn.getNoVerJarRegex());
 			this.releaseName = StrUtils.concat(prjName, "-", prjVer);
 			this.releaseDir = StrUtils.concat(TARGET_DIR, "/", releaseName);
-			this.verClass = mvn.getVerClass().trim();
-			this.mainClass = mvn.getMainClass().trim();
-			this.mainArgs = mvn.getMainArgs().trim();
-			this.charset = mvn.getCharset().trim();
-			this.jdkPath = mvn.getJdkPath().trim();
-			this.xms = mvn.getXms().trim();
-			this.xmx = mvn.getXmx().trim();
-			this.jdkParams = mvn.getJdkParams().trim();
-			this.threadSuffix = mvn.getThreadSuffix().trim().concat(" ");	// 线程后缀必须至少有一个空格, 便于sh脚本定位线程号
-			this.cmpPathMode = CmpPathMode.toMode(mvn.getCmpPathMode().trim());
+			this.versionClass = StrUtils.trim(mvn.getVersionClass());
+			this.mainClass = StrUtils.trim(mvn.getMainClass());
+			this.mainArgs = StrUtils.trim(mvn.getMainArgs());
+			this.charset = StrUtils.trim(mvn.getCharset());
+			this.jdkPath = StrUtils.trim(mvn.getJdkPath());
+			this.xms = StrUtils.trim(mvn.getXms());
+			this.xmx = StrUtils.trim(mvn.getXmx());
+			this.jdkArgs = StrUtils.trim(mvn.getJdkArgs());
+			this.threadSuffix = StrUtils.trim(mvn.getThreadSuffix()).concat(" ");	// 线程后缀必须至少有一个空格, 便于sh脚本定位线程号
+			this.cmpPathMode = CmpPathMode.toMode(StrUtils.trim(mvn.getCmpPathMode()));
 			this.proguardDir = StrUtils.concat(releaseDir, PROGUARD_SUFFIX);
-			this.proguard = BoolUtils.toBool(mvn.getProguard().trim(), false);
+			this.proguard = BoolUtils.toBool(StrUtils.trim(mvn.getProguard()), false);
 			if(!FileUtils.exists(proguardDir)) { proguard = false; }
 			this.copyJarDir = PathUtils.combine(releaseDir, jarLibDir);
 			
 		} catch(Exception e) {
-			Log.error("加载 mojo-release-plugin 配置失败", e);
+			Log.error("加载 release-project-plugin 配置失败", e);
 			System.exit(1);
 		}
 		
@@ -146,9 +146,9 @@ public class Config {
 			System.exit(1);
 		}
 	}
-	
-	public DependType getDependType() {
-		return dependType;
+
+	public DependMode getDependMode() {
+		return dependMode;
 	}
 	
 	public String getJarLibDir() {
@@ -183,8 +183,8 @@ public class Config {
 		return releaseDir;
 	}
 
-	public String getVerClass() {
-		return verClass;
+	public String getVersionClass() {
+		return versionClass;
 	}
 	
 	public String getMainClass() {
@@ -211,8 +211,8 @@ public class Config {
 		return xmx;
 	}
 
-	public String getJdkParams() {
-		return jdkParams;
+	public String getJdkArgs() {
+		return jdkArgs;
 	}
 
 	public String getThreadSuffix() {
@@ -238,7 +238,7 @@ public class Config {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("  dependType: ").append(getDependType().TYPE()).append("\r\n");
+		sb.append("  dependType: ").append(getDependMode().MODE()).append("\r\n");
 		sb.append("  jarLibDir: ").append(getJarLibDir()).append("\r\n");
 		sb.append("  mavenRepository: ").append(getMavenRepository()).append("\r\n");
 		sb.append("  prjName: ").append(getPrjName()).append("\r\n");
@@ -246,14 +246,14 @@ public class Config {
 		sb.append("  noPrjVer: ").append(isNoPrjVer()).append("\r\n");
 		sb.append("  noVerJarRegex: ").append(getNoVerJarRegex()).append("\r\n");
 		sb.append("  releaseDir: ").append(getReleaseDir()).append("\r\n");
-		sb.append("  verClass: ").append(getVerClass()).append("\r\n");
+		sb.append("  verClass: ").append(getVersionClass()).append("\r\n");
 		sb.append("  mainClass: ").append(getMainClass()).append("\r\n");
 		sb.append("  mainArgs: ").append(getMainArgs()).append("\r\n");
 		sb.append("  charset: ").append(getCharset()).append("\r\n");
 		sb.append("  jdkPath: ").append(getJdkPath()).append("\r\n");
 		sb.append("  xms: ").append(getXms()).append("\r\n");
 		sb.append("  xmx: ").append(getXmx()).append("\r\n");
-		sb.append("  jdkParams: ").append(getJdkParams()).append("\r\n");
+		sb.append("  jdkParams: ").append(getJdkArgs()).append("\r\n");
 		sb.append("  threadSuffix: ").append(getThreadSuffix()).append("\r\n");
 		sb.append("  cmpPathMode: ").append(getCmpPathMode().MODE()).append("\r\n");
 		sb.append("  proguard: ").append(isProguard()).append("\r\n");

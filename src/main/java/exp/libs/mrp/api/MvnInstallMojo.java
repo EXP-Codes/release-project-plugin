@@ -15,38 +15,17 @@ import exp.libs.mrp.services.ScriptBuilder;
 /**
  * <PRE>
  * 项目发布插件: Maven 调用入口 - install。
- * 
  * 说明：根据脚本类型，自动生成 J2SE 项目的启动、停止、启动检查等脚本。
- * 
- * 		该插件在 install 生命周期后运行 execute phase
- * 		运行插件前需要进行 jar 依赖分析 requiresDependencyResolution
- * ------------------------
- * 参考文档： https://segmentfault.com/a/1190000041253195
  * </PRE>
  * 
- * <br/><B>PROJECT : </B> mojo-release-plugin
+ * <br/><B>PROJECT : </B> release-project-plugin
  * <br/><B>SUPPORT : </B> <a href="http://www.exp-blog.com" target="_blank">www.exp-blog.com</a> 
  * @version   2022-10-04
  * @author    EXP: 272629724@qq.com
  * @since     jdk版本：jdk1.8
  */
-@Mojo(			// Mojo 插件基础信息
-		name = "install", 					// 适用的目标名称，等价于旧版的 @goal 标签
-		aggregator = false,					// ?
-		configurator = "<configuration>",	// ?
-		instantiationStrategy = InstantiationStrategy.SINGLETON,	// 实例化策略
-		defaultPhase = LifecyclePhase.INSTALL,
-		requiresDependencyResolution = ResolutionScope.RUNTIME,
-		requiresDependencyCollection = ResolutionScope.RUNTIME,
-		requiresOnline = false,				// 提示此Mojo不能在离线模式下运行
-		requiresProject = true,				// 提示此Mojo必须在一个Maven项目内运行
-		threadSafe = false					// 提示此Mojo是否线程安全，线程安全的Mojo支持在并行构建中被并发的调用
-)
-@Execute(		// Mojo 插件运行条件
-		goal = "install",           		// 如果提供 goal，则在执行此 Mojo
-		phase = LifecyclePhase.INSTALL, 	// 在此生命周期阶段自动执行此 Mojo
-		lifecycle = "install"				// 在此生命周期中执行此Mojo
-)
+@Mojo(name = "install", requiresDependencyResolution = ResolutionScope.RUNTIME)	// 运行插件前需要进行 jar 依赖分析 requiresDependencyResolution
+@Execute(goal = "install", phase = LifecyclePhase.INSTALL)						// 该插件在 install 生命周期后运行 execute phase
 public class MvnInstallMojo extends AbstractMojo {
 
 	/** Maven所发布的项目对象 */
@@ -61,7 +40,7 @@ public class MvnInstallMojo extends AbstractMojo {
 	 * </PRE>
 	 */
 	@Parameter(name = "dependMode", alias = "dependType", defaultValue = "SELF")
-	private String dependType;
+	private String dependMode;
 	
 	/**
 	 * <PRE>
@@ -87,10 +66,10 @@ public class MvnInstallMojo extends AbstractMojo {
 
 	/** 项目版本类路径 */
 	@Parameter(name = "versionClass", alias = "verClass", defaultValue = "foo.bar.prj.Version")
-	private String verClass;
+	private String versionClass;
 	
 	/** main 方法入参 */
-	@Parameter(name = "mainArgs", alias = "mainParams", defaultValue = "")
+	@Parameter(name = "mainArgs", alias = "mainParams")
 	private String mainArgs;
 	
 	/** 项目编码 */
@@ -117,8 +96,8 @@ public class MvnInstallMojo extends AbstractMojo {
 	private String xmx;
 
 	/** jdk参数，若非空则会【附加】到所有脚本的JDK参数表中 */
-	@Parameter(name = "jdkArgs", alias = "jdkParams", defaultValue = "")
-	private String jdkParams;
+	@Parameter(name = "jdkArgs", alias = "jdkParams")
+	private String jdkArgs;
 	
 	/**
 	 * <PRE>
@@ -126,7 +105,7 @@ public class MvnInstallMojo extends AbstractMojo {
 	 * 	而 [线程后缀] 则附加在启动脚本/停止脚本的 [项目名称] 后面
 	 * </PRE>
 	 */
-	@Parameter(name = "threadSuffix", defaultValue = "")
+	@Parameter(name = "threadSuffix")
 	private String threadSuffix;
 	
 	/**
@@ -142,7 +121,7 @@ public class MvnInstallMojo extends AbstractMojo {
 	private String noPrjVer;
 	
 	/** 打包时需要去掉版本号的 jars 依赖 (使用正则匹配包名) */
-	@Parameter(name = "noVerJarRegex", defaultValue = "")
+	@Parameter(name = "noVerJarRegex", defaultValue = " ")
 	private String noVerJarRegex;
 	
 	/** 是否使用混淆包（需与混淆打包插件配合使用） */
@@ -174,7 +153,7 @@ public class MvnInstallMojo extends AbstractMojo {
 		Log.info("正在发布项目: ".concat(Config.getInstn().getReleaseName()));
 		Log.info("项目发布参数: \r\n".concat(Config.getInstn().toString()));
 		
-		Log.info("正在清理上次发布缓存...");	// 由于Ant插件先于本插件运行，不能删除ReleaseDir
+		Log.info("正在清理上次发布缓存...");	// 由于 Ant 插件先于本插件运行，不能删除 ReleaseDir
 		FileUtils.delete(Config.getInstn().getCopyJarDir());
 		FileUtils.createDir(Config.getInstn().getCopyJarDir());
 		
@@ -197,8 +176,8 @@ public class MvnInstallMojo extends AbstractMojo {
 		return project;
 	}
 
-	public String getDependType() {
-		return dependType;
+	public String getDependMode() {
+		return dependMode;
 	}
 
 	public String getJarLibDir() {
@@ -209,8 +188,8 @@ public class MvnInstallMojo extends AbstractMojo {
 		return mavenRepository;
 	}
 
-	public String getVerClass() {
-		return verClass;
+	public String getVersionClass() {
+		return versionClass;
 	}
 	
 	public String getMainClass() {
@@ -237,8 +216,8 @@ public class MvnInstallMojo extends AbstractMojo {
 		return xmx;
 	}
 
-	public String getJdkParams() {
-		return jdkParams;
+	public String getJdkArgs() {
+		return jdkArgs;
 	}
 
 	public String getThreadSuffix() {

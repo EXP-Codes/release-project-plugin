@@ -12,7 +12,7 @@ import org.apache.maven.project.MavenProject;
 import exp.libs.mrp.Config;
 import exp.libs.mrp.Log;
 import exp.libs.mrp.envm.CmpPathMode;
-import exp.libs.mrp.envm.DependType;
+import exp.libs.mrp.envm.DependMode;
 import exp.libs.mrp.utils.MvnUtils;
 import exp.libs.utils.other.PathUtils;
 import exp.libs.utils.verify.RegexUtils;
@@ -21,7 +21,7 @@ import exp.libs.utils.verify.RegexUtils;
  * <PRE>
  * Jar包管理器
  * </PRE>
- * <br/><B>PROJECT : </B> mojo-release-plugin
+ * <br/><B>PROJECT : </B> release-project-plugin
  * <br/><B>SUPPORT : </B> <a href="http://www.exp-blog.com" target="_blank">www.exp-blog.com</a> 
  * @version   2017-08-17
  * @author    EXP: 272629724@qq.com
@@ -71,7 +71,7 @@ public class JarMgr {
 		for(String srcPath : srcPaths) {
 			String jarPath = srcPath;
 			
-			if(DependType.SELF == Config.getInstn().getDependType()) {
+			if(DependMode.SELF == Config.getInstn().getDependMode()) {
 				String jarName = PathUtils.toLinux(srcPath).replaceFirst(".*/", "");
 				jarName = _cutVer(jarName);	// 版本号裁剪
 				jarNames.put(srcPath, jarName);
@@ -120,7 +120,7 @@ public class JarMgr {
 			Log.info("拷贝: [".concat(srcPath).concat("] => [").
 					concat(snkPath).concat("]"));
 			
-			if(DependType.SELF != Config.getInstn().getDependType()) {
+			if(DependMode.SELF != Config.getInstn().getDependMode()) {
 				break;	// 若不使用私有仓库， 则只复制项目jar包
 			}
 		}
