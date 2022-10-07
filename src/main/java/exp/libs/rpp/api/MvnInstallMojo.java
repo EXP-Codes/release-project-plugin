@@ -117,7 +117,7 @@ public class MvnInstallMojo extends AbstractMojo {
 	 * 反之若此处值为 false, 则无需做特殊配置。
 	 * </PRE>
 	 */
-	@Parameter(name = "noPrjVer", defaultValue = "false")
+	@Parameter(name = "noPrjVer", defaultValue = "true")
 	private String noPrjVer;
 	
 	/** 打包时需要去掉版本号的 jars 依赖 (使用正则匹配包名) */
